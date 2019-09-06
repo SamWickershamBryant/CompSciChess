@@ -6,8 +6,33 @@ class Painter : PainterBase {
     
     required init() {
     }
+
+    override func framesPerSecond() -> Int {
+        return 10
+    }
     
     override func setup(canvas:Canvas) {
+    }
+
+    override func render(canvas:Canvas) {
+
+    }
+
+    override func calculate(canvasId:Int, canvasSize:Size?) {
+        
+    }
+
+    override func onClick(location:Point) {
+
+    }
+
+    override func onMouseMove(location:Point) {
+
+    }
+
+    override func onKeyDown(key:String, code:String, ctrlKey:Bool,
+                            shiftKey:Bool, altKey:Bool, metaKey:Bool) {
+        
     }
     
 }
@@ -20,4 +45,5 @@ do {
     print("Error: \(error)")
 }
 
-// its lit boys 
+// its lit boys
+// it is doe
