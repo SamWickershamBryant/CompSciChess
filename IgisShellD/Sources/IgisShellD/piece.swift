@@ -8,6 +8,9 @@ class Piece {
 
     let color : String
 
+
+    //global piece variable, this makes it so every in every board, duplicate pieces have the same address and therefore if compared Piece.wPawn == Piece.wPawn : true.
+    //To check what type a piece is it is simply Piece.wPawn.type or .id() 
     static let wPawn = Piece(type:"p", color:"w")
     static let wRook = Piece(type:"r", color:"w")
     static let wKnight = Piece(type:"n", color:"w")
@@ -26,6 +29,10 @@ class Piece {
     init(type:String, color:String) {
         self.type = type
         self.color = color        
+    }
+
+    func id() -> String {
+        return self.type
     }
 
 

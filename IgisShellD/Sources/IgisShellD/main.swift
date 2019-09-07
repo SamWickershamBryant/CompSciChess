@@ -12,6 +12,8 @@ class Painter : PainterBase {
     }
     
     override func setup(canvas:Canvas) {
+        let newBoard = Board(topLeft:Point(x:0,y:0), size:64)
+        print(newBoard.boardstate)
     }
 
     override func render(canvas:Canvas) {
