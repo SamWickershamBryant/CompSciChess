@@ -13,7 +13,11 @@ class Painter : PainterBase {
     
     override func setup(canvas:Canvas) {
         let newBoard = Board(topLeft:Point(x:0,y:0), size:64, boardstate: Board.defaultBoardstate)
-        print(newBoard.boardstate)
+//      print(newBoard.boardstate)
+
+        if newBoard.findPiece(piece:Piece.wKing) != nil {
+            print(newBoard.findPiece(piece:Piece.wKing)!.x,newBoard.findPiece(piece:Piece.wKing)!.y)
+        }
 
         
     }
