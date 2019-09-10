@@ -15,10 +15,14 @@ class Painter : PainterBase {
         let newBoard = Board(topLeft:Point(x:0,y:0), size:64, boardstate: Board.defaultBoardstate)
 //      print(newBoard.boardstate)
 
-        if newBoard.findPiece(Piece.wKing) != nil {
-            print(newBoard.findPiece(Piece.wKing)!.x,newBoard.findPiece(Piece.wKing)!.y)
+        let wKingsOnBoard = newBoard.findPiece(Piece.wKing)
+        if wKingsOnBoard.count == 1 {
+            print("nice")
+            print(wKingsOnBoard[0].x,wKingsOnBoard[0].y)
         }
-
+//        print("Piece at (4,0) is \(newBoard.pieceAt(Point(x:4,y:0))!.type)")
+  //      print("Piece at (2,3) is \(newBoard.pieceAt(Point(x:2,y:3)))")
+    //    print("Piece at (4,6) is \(newBoard.pieceAt(Point(x:4,y:6))!.type)")
         
     }
     

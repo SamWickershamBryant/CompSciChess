@@ -51,19 +51,21 @@ class Board {
         if boardstate[position.y][position.x] == nil {
             return nil
         } else {
-            return boardstate[position.y][position.x]
+            return boardstate[position.y][position.x]!
         }
     }
-    
-    func findPiece(_ piece:Piece) -> Point? {
+
+    // changed to return array of Points, if you search for a pawn, it should return all pawns on the board. If none found, simply return empty array
+    func findPiece(_ piece:Piece) -> [Point]{
+        var positions : [Point] = []
         for row in 0...7 {
             for element in 0...7 {
                 if boardstate[row][element] === piece {
-                    return Point(x:row,y:element)
+                    positions.append(Point(x:element,y:row))
                 }
             }
         }
-        return nil
+        return positions
     }
     
     // Boolean, if king in check return true
