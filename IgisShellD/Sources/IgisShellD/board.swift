@@ -1,4 +1,3 @@
-
 import Igis
 
 
@@ -48,23 +47,25 @@ class Board {
         self.boardstate = boardstate
     }
  
-    func pieceAt(_ position:Point) -> Piece? { // 0 - 7, 0 - 7, a = 0, 1 = 0 etc etc..
+    func pieceAt(_ position:Point) -> Piece? {
         if boardstate[position.y][position.x] == nil {
             return nil
         } else {
             return boardstate[position.y][position.x]
         }
-        // traverse through boardstate and return piece at given positon.
-        // should properly throw error if given invalid position
     }
-
+    func findPiece(piece:Piece) -> Point? {
+        for row in 0...8 {
+            for element in 0...8 {
+                if boardstate[row][element]! === piece {
+                    return Point(x:row,y:element)
+                }
+            }
+        }
+        return nil
+    }
     // Boolean, if king in check return true
-    func whiteKingInDanger() -> Bool {
-        return false // placeholder
-    }
-
-    func blackKingInDanger() -> Bool {
-        return false // ditto
+    func KingInDanger(piece:Piece) -> Bool {                      
     }
 
     // returns ALL legal moves for the piece in given position, if position is empty return an empty array
@@ -81,7 +82,7 @@ class Board {
 
     // moveBoard moves the entire board to a position (topleft = destination)
     func moveBoard(topLeft:Point) {
-  //      
+        self.topLeft = topLeft
     }
 
     // resizeBoard lowers board size by 8 in chosen direction, direction=1 : Size UP
