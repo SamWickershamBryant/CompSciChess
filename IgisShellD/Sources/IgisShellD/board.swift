@@ -55,7 +55,7 @@ class Board {
         }
     }
     
-    func findPiece(piece:Piece) -> Point? {
+    func findPiece(_ piece:Piece) -> Point? {
         for row in 0...7 {
             for element in 0...7 {
                 if boardstate[row][element] === piece {
@@ -68,11 +68,11 @@ class Board {
     
     // Boolean, if king in check return true
     func KingInDanger(piece:Piece) -> Bool {
-        return false // placeholder
+        return false
     }
-
     // returns ALL legal moves for the piece in given position, if position is empty return an empty array
-    func legalMoves(for:Point) -> [Point] {
+    func legalMoves(for:Point) -> [Point] {        
+        
         return []
     }
 
