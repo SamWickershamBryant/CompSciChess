@@ -3,7 +3,7 @@ import Igis
 
 class Piece {
 
-    var type: String
+    var type : String
     let color : String
 
     //global piece variable, this makes it so every in every board, duplicate pieces have the same address and therefore if compared Piece.wPawn == Piece.wPawn : true.
