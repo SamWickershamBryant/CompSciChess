@@ -1,9 +1,8 @@
 import Igis
 
-
 class Board {
     
-    /*
+     /*
      Board:
      Board class will only display and update the board, move pieces, check if king is in check, etc etc...
      Game class will contruct instances of Board and position the board in an appropriate position,
@@ -90,35 +89,7 @@ class Board {
     func inBounds(_ pos:Point) -> Bool {
         return pos.x <= 7 && pos.y <= 7 && pos.x >= 0 && pos.y >= 0
     }
-    
-    // returns ALL legal moves for the piece in given position, if position is empty return an empty array
-    func legalMoves(pos:Point) -> [Point] {
-        
-        // Is the point in bounds
-        guard inBounds(pos) == false else {
-            print("The point is not in bounds")
-            return []
-        }        
-        // Is there is a piece        
-        guard pieceAt(pos) != nil else {
-            print("No piece at position : \(pos)")
-            return []
-        }
-
-        var legalMoves = [Point]()
-        
-        let piece = pieceAt(pos) 
-        let piecePos = findPiece(piece!)[0]
-        
-        // legal moves for knight
-        if piece!.type == "n" {            
-            var legalMovesUnfiltered = [Point(x:piecePos.x+2,y:piecePos.y+1),Point(x:piecePos.x+1,y:piecePos.y+2),
-                                        Point(x:piecePos.x-2,y:piecePos.y-1),Point(x:piecePos.x-1,y:piecePos.y-2),
-            ]
-
-        }        
-        return []
-    }
+   
 
     // Moves piece from position to new position... check if move is legal,
     // check if it is a castling move and ensure appropriate pieces get moved and that it is legal

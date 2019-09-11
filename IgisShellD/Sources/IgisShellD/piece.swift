@@ -32,6 +32,35 @@ class Piece {
         return "Color: \(self.color), Type: \(self.type)" 
     }
 
+    func legalMoves(pos:Point, boardState: [[Piece?]]) -> [Point] {
+        
+        // Is the point in bounds
+        guard inBounds(pos) == false else {
+            print("The point is not in bounds")
+            return []
+        }        
+        // Is there is a piece        
+        guard pieceAt(pos) != nil else {
+            print("No piece at position : \(pos)")
+            return []
+        }
+        
+        var legalMoves = [Point]()
+        
+        let piece = pieceAt(pos) 
+        let piecePos = findPiece(piece!)[0]
+        
+        // legal moves for knight
+        if piece!.type == "n" {            
+            var legalMovesUnfiltered = [Point(x:piecePos.x+2,y:piecePos.y+1),Point(x:piecePos.x+1,y:piecePos.y+2),
+                                        Point(x:piecePos.x-2,y:piecePos.y-1),Point(x:piecePos.x-1,y:piecePos.y-2),
+            ]
+
+        }        
+        return []
+    }
+
+
 
 
 
