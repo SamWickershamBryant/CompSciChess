@@ -3,8 +3,8 @@ import Igis
 
 class Piece {
 
-    var type : String
-    let color : String
+    let type : String
+    let color : String // "b" or "w"
 
     //global piece variable, this makes it so every in every board, duplicate pieces have the same address and therefore if compared Piece.wPawn == Piece.wPawn : true.
     //To check what type a piece is it is simply Piece.wPawn.type or .id()
@@ -25,14 +25,24 @@ class Piece {
     
     init(type:String, color:String) {
         self.type = type
-        self.color = color        
+        self.color = color
     }
 
     func id() -> String {
         return "Color: \(self.color), Type: \(self.type)" 
     }
 
+<<<<<<< HEAD
     func legalMoves(pos:Point,boardstate:[[Piece?]]) -> [Point] {
+=======
+    // returns ALL legal moves for the piece in given position, if position is empty return an empty array
+    func legalMoves(_ position:Point, boardstate:[[Piece?]]) -> [Point] {
+        
+    }
+
+   
+    func legalMoves(pos:Point, boardState: [[Piece?]]) -> [Point] {
+>>>>>>> 39415d9686e829703b13c9e35b23ac905ae7659d
         
         // Is the point in bounds
         guard Board.inBounds(pos) == false else {

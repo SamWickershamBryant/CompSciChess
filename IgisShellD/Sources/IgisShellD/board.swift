@@ -63,7 +63,11 @@ class Board {
     }
 
     // changed to return array of Points, if you search for a pawn, it should return all pawns on the board. If none found, simply return empty array
+<<<<<<< HEAD
     static func findPiece(_ piece:Piece, boardstate: [[Piece?]]) -> [Point]{
+=======
+    func findPiece(_ piece:Piece) -> [Point] {
+>>>>>>> 39415d9686e829703b13c9e35b23ac905ae7659d
         var positions : [Point] = []
         for row in 0...7 {
             for element in 0...7 {
@@ -73,27 +77,63 @@ class Board {
             }
         }
         return positions
-    }    
-    // Boolean, if king in check return true
-    func blackKingInDanger(piece:Piece) -> Bool {
-        
-        return false
     }
 
-    func whiteKingInDanger(piece:Piece) -> Bool {
+    func aliveWhitePieces() -> [Piece] { 
+        var whitePieces = [Piece]()
+        for row in 0...7 {
+            for column in 0...7 {
+                let piece = boardstate[row][column]
+                if piece != nil {
+                    if piece!.color == "w" {
+                        whitePieces.append(piece!)
+                    }
+                }
+            }
+        }
+        return whitePieces
+    }
+    func aliveBlackPieces() -> [Piece] { 
+        var blackPieces = [Piece]()
+        for row in 0...7 {
+            for column in 0...7 {
+                let piece = boardstate[row][column]
+                if piece != nil {
+                    if piece!.color == "b" {
+                        blackPieces.append(piece!)
+                    }
+                }
+            }
+        }
+        return blackPieces
+    }
+    
+
+    // Boolean, if king in check return true
+    /*func isBlackKingInDanger() -> Bool {
+        let kingPos = findPiece(Piece.bKing)
+        let whitePieces = aliveWhitePieces()
+        for wPiece in whitePieces {
+            if wPiece.legalMoves == kingPos {
+               }
+        }
         
         return false
     }
-    
+ 
+    func isWhiteKingInDanger() -> Bool {
+        
+        return false
+    }*/
     
     static func inBounds(_ pos:Point) -> Bool {
         return pos.x <= 7 && pos.y <= 7 && pos.x >= 0 && pos.y >= 0
     }
-   
 
+    
     // Moves piece from position to new position... check if move is legal,
-    // check if it is a castling move and ensure appropriate pieces get moved and that it is legal
-    // Optional string return is placeholder for however we decide to manage tracking what pieces got destroyed, if its now in check or mate, etc..
+    //check if it is a castling move and ensure appropriate pieces get moved and that it is legal
+    //Optional string return is placeholder for however we decide to manage tracking what pieces got destroyed, if its now in check or mate, etc..
     func movePiece(from:Point, to:Point) -> String? {
         return nil
     }
@@ -146,7 +186,7 @@ class Board {
             }
         }
         
-        // render inLines:
+        //render inLines:
         let inStrokeStyle = StrokeStyle(color:inLineColor)
         canvas.render(inStrokeStyle)
         canvas.render(LineWidth(width:lineWidth))
