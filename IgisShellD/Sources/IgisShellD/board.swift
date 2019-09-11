@@ -7,7 +7,7 @@ class Board {
      Board:
      Board class will only display and update the board, move pieces, check if king is in check, etc etc...
      Game class will contruct instances of Board and position the board in an appropriate position,
-     Game class will handel parsing clicks on the board and the board will not handle that, the Game class will instead
+     Game class will handle parsing clicks on the board, the Game class will instead
      parse where the user is clicking and call the board class for board related functions.
      */
     
