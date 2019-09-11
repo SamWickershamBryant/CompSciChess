@@ -76,10 +76,16 @@ class Board {
         return positions
     }    
     // Boolean, if king in check return true
-    func KingInDanger(piece:Piece) -> Bool {
+    func blackKingInDanger(piece:Piece) -> Bool {
         
         return false
     }
+
+    func whiteKingInDanger(piece:Piece) -> Bool {
+        
+        return false
+    }
+    
     
     func inBounds(_ pos:Point) -> Bool {
         return pos.x <= 7 && pos.y <= 7 && pos.x >= 0 && pos.y >= 0
@@ -93,7 +99,7 @@ class Board {
             print("The point is not in bounds")
             return []
         }        
-        // is there is a piece        
+        // Is there is a piece        
         guard pieceAt(pos) != nil else {
             print("No piece at position : \(pos)")
             return []
@@ -109,6 +115,7 @@ class Board {
             var legalMovesUnfiltered = [Point(x:piecePos.x+2,y:piecePos.y+1),Point(x:piecePos.x+1,y:piecePos.y+2),
                                         Point(x:piecePos.x-2,y:piecePos.y-1),Point(x:piecePos.x-1,y:piecePos.y-2),
             ]
+
         }        
         return []
     }
