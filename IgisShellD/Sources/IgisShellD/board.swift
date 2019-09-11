@@ -1,9 +1,8 @@
 import Igis
 
-
 class Board {
     
-    /*
+     /*
      Board:
      Board class will only display and update the board, move pieces, check if king is in check, etc etc...
      Game class will contruct instances of Board and position the board in an appropriate position,
@@ -106,8 +105,13 @@ class Board {
     func inBounds(_ pos:Point) -> Bool {
         return pos.x <= 7 && pos.y <= 7 && pos.x >= 0 && pos.y >= 0
     }
+<<<<<<< HEAD
     
     
+=======
+   
+
+>>>>>>> 77efaeed32afe7127db84a53a111de3487d9cc9a
     // Moves piece from position to new position... check if move is legal,
     //check if it is a castling move and ensure appropriate pieces get moved and that it is legal
     //Optional string return is placeholder for however we decide to manage tracking what pieces got destroyed, if its now in check or mate, etc..
