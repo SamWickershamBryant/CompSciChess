@@ -54,7 +54,7 @@ class Board {
         self.lineWidth = lineWidth
     }
  
-    func pieceAt(_ position:Point) -> Piece? {
+    static func pieceAt(_ position:Point, boardstate: [[Piece?]]) -> Piece? {        
         if boardstate[position.y][position.x] == nil {
             return nil
         } else {
@@ -63,7 +63,7 @@ class Board {
     }
 
     // changed to return array of Points, if you search for a pawn, it should return all pawns on the board. If none found, simply return empty array
-    func findPiece(_ piece:Piece) -> [Point]{
+    static func findPiece(_ piece:Piece, boardstate: [[Piece?]]) -> [Point]{
         var positions : [Point] = []
         for row in 0...7 {
             for element in 0...7 {
@@ -86,7 +86,7 @@ class Board {
     }
     
     
-    func inBounds(_ pos:Point) -> Bool {
+    static func inBounds(_ pos:Point) -> Bool {
         return pos.x <= 7 && pos.y <= 7 && pos.x >= 0 && pos.y >= 0
     }
    

@@ -7,7 +7,7 @@ class Piece {
     let color : String
 
     //global piece variable, this makes it so every in every board, duplicate pieces have the same address and therefore if compared Piece.wPawn == Piece.wPawn : true.
-    //To check what type a piece is it is simply Piece.wPawn.type or .id() 
+    //To check what type a piece is it is simply Piece.wPawn.type or .id()
     static let wPawn = Piece(type:"p", color:"w")
     static let wRook = Piece(type:"r", color:"w")
     static let wKnight = Piece(type:"n", color:"w")
@@ -32,29 +32,30 @@ class Piece {
         return "Color: \(self.color), Type: \(self.type)" 
     }
 
-    func legalMoves(pos:Point, boardState: [[Piece?]]) -> [Point] {
+    func legalMoves(pos:Point,boardstate:[[Piece?]]) -> [Point] {
         
         // Is the point in bounds
-        guard inBounds(pos) == false else {
+        guard Board.inBounds(pos) == false else {
             print("The point is not in bounds")
             return []
         }        
         // Is there is a piece        
-        guard pieceAt(pos) != nil else {
+        guard Board.pieceAt(pos, boardstate:boardstate) != nil else {
             print("No piece at position : \(pos)")
             return []
         }
         
         var legalMoves = [Point]()
         
-        let piece = pieceAt(pos) 
-        let piecePos = findPiece(piece!)[0]
+        let piece = Board.pieceAt(pos,boardstate:boardstate)
+        let piecePos = Board.findPiece(piece!, boardstate:boardstate)[0]
         
         // legal moves for knight
         if piece!.type == "n" {            
             var legalMovesUnfiltered = [Point(x:piecePos.x+2,y:piecePos.y+1),Point(x:piecePos.x+1,y:piecePos.y+2),
                                         Point(x:piecePos.x-2,y:piecePos.y-1),Point(x:piecePos.x-1,y:piecePos.y-2),
-            ]
+                                        Point(x:piecePos.x+1,y:piecePos.y-2),Point(x:piecePos.x]
+            
 
         }        
         return []
