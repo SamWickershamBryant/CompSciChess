@@ -63,7 +63,7 @@ class Board {
     }
 
     // changed to return array of Points, if you search for a pawn, it should return all pawns on the board. If none found, simply return empty array
-    func findPiece(_ piece:Piece) -> [Point]{
+    func findPiece(_ piece:Piece) -> [Point] {
         var positions : [Point] = []
         for row in 0...7 {
             for element in 0...7 {
@@ -75,24 +75,44 @@ class Board {
         return positions
     }
 
-    func whitePieces() -> [Piece] { 
+    func aliveWhitePieces() -> [Piece] { 
+        var whitePieces = [Piece]()
         for row in 0...7 {
             for column in 0...7 {
-                let currentPiece = pieceAt(Point(x:row, y:column))
-                if currentPiece != nil {
-                    if currentPiece.color == "w" {
-                        whitePieces.append() 
-                        
+                let piece = boardstate[row][column]
+                if piece != nil {
+                    if piece!.color == "w" {
+                        whitePieces.append(piece!)
                     }
                 }
             }
+        }
+        return whitePieces
     }
+    func aliveBlackPieces() -> [Piece] { 
+        var blackPieces = [Piece]()
+        for row in 0...7 {
+            for column in 0...7 {
+                let piece = boardstate[row][column]
+                if piece != nil {
+                    if piece!.color == "b" {
+                        blackPieces.append(piece!)
+                    }
+                }
+            }
+        }
+        return blackPieces
     }
     
 
     // Boolean, if king in check return true
-    func isBlackKingInDanger() -> Bool {
-        var whitePieces = [Piece]()
+    /*func isBlackKingInDanger() -> Bool {
+        let kingPos = findPiece(Piece.bKing)
+        let whitePieces = aliveWhitePieces()
+        for wPiece in whitePieces {
+            if wPiece.legalMoves == kingPos {
+               }
+        }
         
         return false
     }
@@ -100,18 +120,13 @@ class Board {
     func isWhiteKingInDanger() -> Bool {
         
         return false
-    }
+    }*/
     
     func inBounds(_ pos:Point) -> Bool {
         return pos.x <= 7 && pos.y <= 7 && pos.x >= 0 && pos.y >= 0
     }
-<<<<<<< HEAD
-    
-    
-=======
-   
 
->>>>>>> 77efaeed32afe7127db84a53a111de3487d9cc9a
+    
     // Moves piece from position to new position... check if move is legal,
     //check if it is a castling move and ensure appropriate pieces get moved and that it is legal
     //Optional string return is placeholder for however we decide to manage tracking what pieces got destroyed, if its now in check or mate, etc..

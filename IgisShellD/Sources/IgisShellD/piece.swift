@@ -32,14 +32,12 @@ class Piece {
         return "Color: \(self.color), Type: \(self.type)" 
     }
 
-<<<<<<< HEAD
     // returns ALL legal moves for the piece in given position, if position is empty return an empty array
     func legalMoves(_ position:Point, boardstate:[[Piece?]]) -> [Point] {
         
     }
 
-    
-=======
+   
     func legalMoves(pos:Point, boardState: [[Piece?]]) -> [Point] {
         
         // Is the point in bounds
@@ -69,7 +67,6 @@ class Piece {
     }
 
 
->>>>>>> 77efaeed32afe7127db84a53a111de3487d9cc9a
 
 
 
