@@ -82,10 +82,7 @@ class Board {
     }
     
     func inBounds(_ pos:Point) -> Bool {
-        guard pos.x <= 7 && pos.y <= 7 && pos.x >= 0 && pos.y >= 0 else {
-            return false
-        }
-        return true
+        return pos.x <= 7 && pos.y <= 7 && pos.x >= 0 && pos.y >= 0
     }
     
     // returns ALL legal moves for the piece in given position, if position is empty return an empty array
