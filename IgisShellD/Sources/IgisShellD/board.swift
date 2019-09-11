@@ -98,19 +98,24 @@ class Board {
             print("No piece at position : \(pos)")
             return []
         }
+
+        var legalMoves = [Point]()
         
-        
-        let piece = pieceAt(pos)!.type 
+        let piece = pieceAt(pos) 
+        let piecePos = findPiece(piece!)[0]
         
         // legal moves for knight
-        if piece == "n" {                       
+        if piece!.type == "n" {            
+            var legalMovesUnfiltered = [Point(x:piecePos.x+2,y:piecePos.y+1),Point(x:piecePos.x+1,y:piecePos.y+2),
+                                        Point(x:piecePos.x-2,y:piecePos.y-1),Point(x:piecePos.x-1,y:piecePos.y-2),
+            ]
         }        
         return []
     }
 
     // Moves piece from position to new position... check if move is legal,
-    //check if it is a castling move and ensure appropriate pieces get moved and that it is legal
-    //Optional string return is placeholder for however we decide to manage tracking what pieces got destroyed, if its now in check or mate, etc..
+    // check if it is a castling move and ensure appropriate pieces get moved and that it is legal
+    // Optional string return is placeholder for however we decide to manage tracking what pieces got destroyed, if its now in check or mate, etc..
     func movePiece(from:Point, to:Point) -> String? {
         return nil
     }
@@ -163,7 +168,7 @@ class Board {
             }
         }
         
-        //render inLines:
+        // render inLines:
         let inStrokeStyle = StrokeStyle(color:inLineColor)
         canvas.render(inStrokeStyle)
         canvas.render(LineWidth(width:lineWidth))
