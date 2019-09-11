@@ -18,10 +18,7 @@ class Board {
     let outLineColor : Color
     let inLineColor : Color
     let squareColor : [Color]
-    let lineWidth : Int
-    
-    
-    
+    let lineWidth : Int    
     
     var boardstate : [[Piece?]] // nil = empty space
     // example boardstate:
@@ -77,15 +74,40 @@ class Board {
             }
         }
         return positions
-    }
-    
+    }    
     // Boolean, if king in check return true
     func KingInDanger(piece:Piece) -> Bool {
+        
         return false
     }
+    
+    func inBounds(_ pos:Point) -> Bool {
+        guard pos.x <= 7 && pos.y <= 7 && pos.x >= 0 && pos.y >= 0 else {
+            return false
+        }
+        return true
+    }
+    
     // returns ALL legal moves for the piece in given position, if position is empty return an empty array
-    func legalMoves(for:Point) -> [Point] {        
+    func legalMoves(pos:Point) -> [Point] {
         
+        // Is the point in bounds
+        guard inBounds(pos) == false else {
+            print("The point is not in bounds")
+            return []
+        }        
+        // is there is a piece        
+        guard pieceAt(pos) != nil else {
+            print("No piece at position : \(pos)")
+            return []
+        }
+        
+        
+        let piece = pieceAt(pos)!.type 
+        
+        // legal moves for knight
+        if piece == "n" {                       
+        }        
         return []
     }
 
@@ -125,14 +147,14 @@ class Board {
         
         var colorIndex = 0
         
-        for collumn in 0 ... 7 {
+        for column in 0 ... 7 {
             for row in 0 ... 7 {
                 var __row = row
-                if (collumn % 2 != 0) {
+                if (column % 2 != 0) {
                     __row = 7 - row
                 }
                 let squareTopLeft = Point(x:topLeft.x + (__row * sideLength),
-                                          y:topLeft.y + (collumn * sideLength))
+                                          y:topLeft.y + (column * sideLength))
                 
                 let rect = Rect(topLeft:squareTopLeft, size:Size(width:sideLength, height:sideLength))
                 let rectangle = Rectangle(rect:rect, fillMode: .fill)

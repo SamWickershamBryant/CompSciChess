@@ -14,7 +14,7 @@ class Painter : PainterBase {
     override func setup(canvas:Canvas) {
         let newBoard = Board(topLeft:Point(x:100,y:100), size:512, boardstate: Board.defaultBoardstate)
         //      print(newBoard.boardstate)
-        newBoard.render(canvas:canvas)
+        newBoard.renderBoard(canvas:canvas)
 
         let wKingsOnBoard = newBoard.findPiece(Piece.wKing)
         if wKingsOnBoard.count == 1 {
