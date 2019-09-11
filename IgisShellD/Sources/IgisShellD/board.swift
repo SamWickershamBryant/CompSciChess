@@ -15,6 +15,10 @@ class Board {
     var size : Int // Only accept integer divisible by 8
     // size is the length of a side of the -entire- board.
     //must be divisbile by eight so there is the correct amount of pixels for 64 inner squares.
+    let outLineColor : Color
+    let inLineColor : Color
+    let squareColor : [Color]
+    let lineWidth : Int
     
     
     
@@ -41,10 +45,17 @@ class Board {
                                     [Piece.wPawn, Piece.wPawn, Piece.wPawn, Piece.wPawn, Piece.wPawn, Piece.wPawn, Piece.wPawn, Piece.wPawn],
                                     [Piece.wRook, Piece.wKnight, Piece.wBishop, Piece.wQueen, Piece.wKing, Piece.wBishop, Piece.wKnight, Piece.wRook]]
     
-    init(topLeft:Point, size:Int, boardstate:[[Piece?]] = Board.defaultBoardstate){
+    init(topLeft:Point, size:Int, boardstate:[[Piece?]] = Board.defaultBoardstate,
+         outLineColor:Color = Color(.black), inLineColor:Color = Color(.black), squareColor:[Color] = [Color(.gray), Color(.royalblue)],
+         lineWidth:Int = 2){
         self.topLeft = topLeft
         self.size = size // input not sanitized... yet (MUST be divisible by 8)
         self.boardstate = boardstate
+
+        self.outLineColor = outLineColor
+        self.inLineColor = inLineColor
+        self.squareColor = squareColor
+        self.lineWidth = lineWidth
     }
  
     func pieceAt(_ position:Point) -> Piece? {
@@ -90,9 +101,86 @@ class Board {
         self.topLeft = topLeft
     }
 
-    // resizeBoard lowers board size by 8 in chosen direction, direction=1 : Size UP
-    func resizeBoard(direction:Bool) {//                       direction=0 : Size DOWN
-//
+    
+    func resizeBoard(size:Int) {
+        self.size = size
     }
+
+    func renderBoard(canvas:Canvas) {
+        //render squares, then inlines, then outlines in that order
+        
+         let sideLength = size / 8 // side length of a single square
+
+         //render squares:
+
+        
+        
+        func incrementColor(index: inout Int) {
+            if index >= squareColor.count - 1 {
+                index = 0
+            } else {
+                index += 1
+            }
+        }
+        
+        var colorIndex = 0
+        
+        for collumn in 0 ... 7 {
+            for row in 0 ... 7 {
+                var __row = row
+                if (collumn % 2 != 0) {
+                    __row = 7 - row
+                }
+                let squareTopLeft = Point(x:topLeft.x + (__row * sideLength),
+                                          y:topLeft.y + (collumn * sideLength))
+                
+                let rect = Rect(topLeft:squareTopLeft, size:Size(width:sideLength, height:sideLength))
+                let rectangle = Rectangle(rect:rect, fillMode: .fill)
+                let fillStyle = FillStyle(color:squareColor[colorIndex])
+                canvas.render(fillStyle)
+                canvas.render(rectangle)
+                incrementColor(index:&colorIndex)
+                
+            }
+        }
+        
+        //render inLines:
+        let inStrokeStyle = StrokeStyle(color:inLineColor)
+        canvas.render(inStrokeStyle)
+        canvas.render(LineWidth(width:lineWidth))
+        for row in 1 ... 7 {
+            let verticalLine = Lines(from:Point(x:topLeft.x + (row * sideLength),
+                                                y:topLeft.y),
+                                     to:Point(x:topLeft.x + (row * sideLength),
+                                              y:topLeft.y + size))
+            
+            canvas.render(verticalLine)
+        }
+
+        for collumn in 1 ... 7 {
+            let horizontalLine = Lines(from:Point(x:topLeft.x,
+                                                  y:topLeft.y + (collumn * sideLength)),
+                                       to:Point(x:topLeft.x + size,
+                                                y:topLeft.y + (collumn * sideLength)))
+            canvas.render(horizontalLine)
+        }
+
+        //render outLines:
+        let outStrokeStyle = StrokeStyle(color:outLineColor)
+        canvas.render(outStrokeStyle)
+        canvas.render(LineWidth(width:lineWidth))
+
+        let outRect = Rect(topLeft:topLeft, size:Size(width:size, height:size))
+        let outRectangle = Rectangle(rect:outRect, fillMode: .stroke)
+        canvas.render(outRectangle)
+        
+        
+        
+    }
+
+    
+
+    
+    
 
 }

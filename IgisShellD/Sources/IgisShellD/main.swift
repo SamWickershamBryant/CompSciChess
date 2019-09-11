@@ -12,8 +12,9 @@ class Painter : PainterBase {
     }
     
     override func setup(canvas:Canvas) {
-        let newBoard = Board(topLeft:Point(x:0,y:0), size:64, boardstate: Board.defaultBoardstate)
-//      print(newBoard.boardstate)
+        let newBoard = Board(topLeft:Point(x:100,y:100), size:512, boardstate: Board.defaultBoardstate)
+        //      print(newBoard.boardstate)
+        newBoard.render(canvas:canvas)
 
         let wKingsOnBoard = newBoard.findPiece(Piece.wKing)
         if wKingsOnBoard.count == 1 {
@@ -23,6 +24,10 @@ class Painter : PainterBase {
 //        print("Piece at (4,0) is \(newBoard.pieceAt(Point(x:4,y:0))!.type)")
   //      print("Piece at (2,3) is \(newBoard.pieceAt(Point(x:2,y:3)))")
     //    print("Piece at (4,6) is \(newBoard.pieceAt(Point(x:4,y:6))!.type)")
+
+
+        
+
         
     }
     
