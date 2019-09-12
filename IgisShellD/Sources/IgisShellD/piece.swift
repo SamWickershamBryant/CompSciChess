@@ -1,10 +1,10 @@
-
 import Igis
 
 class Piece {
 
     let type : String
     let color : String // "b" or "w"
+    var hasMoved : Bool
 
     //global piece variable, this makes it so every in every board, duplicate pieces have the same address and therefore if compared Piece.wPawn == Piece.wPawn : true.
     //To check what type a piece is it is simply Piece.wPawn.type or .id()
@@ -46,18 +46,46 @@ class Piece {
         }
         
         var legalMoves = [Point]()
+        var unfilteredLegalMoves = [Point]()
+
         
         let piece = Board.pieceAt(pos,boardstate:boardState)
         let piecePos = Board.findPiece(piece!, boardstate:boardState)[0]
         
-        // legal moves for knight
-        if piece!.type == "n" {            
-            var legalMovesUnfiltered = [Point(x:piecePos.x+2,y:piecePos.y+1),Point(x:piecePos.x+1,y:piecePos.y+2),
-                                        Point(x:piecePos.x-2,y:piecePos.y-1),Point(x:piecePos.x-1,y:piecePos.y-2),
-                                        Point(x:piecePos.x+1,y:piecePos.y-2),Point(x:piecePos.x)]
-            
+        // Legal moves for knight
+        if piece!.type == "n" {
+                                        //Top left                            
+            unfilteredLegalMoves =    [Point(x:piecePos.x-2,y:piecePos.y-1),Point(x:piecePos.x-1,y:piecePos.y-2),
+                                       //Top right
+                                       Point(x:piecePos.x+2,y:piecePos.y-1),Point(x:piecePos.x+1,y:piecePos.y-2),
+                                       //Bottom left
+                                       Point(x:piecePos.x-2,y:piecePos.y+1),Point(x:piecePos.x-1,y:piecePos.y+2),
+                                       //Bottom right
+                                       Point(x:piecePos.x+2,y:piecePos.y+1),Point(x:piecePos.x+1,y:piecePos.y+2)]
 
-        }        
+            
+        // Legal moves for rook
+        } else if piece!.type == "r" { 
+            
+            // vertical up
+            for y in 1...7 {
+                unfilteredLegalMoves.append(Point(x:piecePos.x,y:piecePos.y-y))
+            }
+            // vertical down
+            for y in 1...7 {
+                unfilteredLegalMoves.append(Point(x:piecePos.x,y:piecePos.y+y))
+            }
+            // Horizontal left
+            for x in 1...7 {
+                unfilteredLegalMoves.append(Point(x:piecePos.x-x,y:piecePos.y))
+            }
+            // Horizontal right
+            for x in 1...7 {
+                unfilteredLegalMoves.append(Point(x:piecePos.x+x,y:piecePos.y))
+            }
+            
+        }
+        
         return []
     }
 

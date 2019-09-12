@@ -61,11 +61,11 @@ class Board {
             return boardstate[position.y][position.x]!
         }
     }
-
+    
     // changed to return array of Points, if you search for a pawn, it should return all pawns on the board. If none found, simply return empty array
-
+    
     static func findPiece(_ piece:Piece, boardstate: [[Piece?]]) -> [Point]{
-
+        
         var positions : [Point] = []
         for row in 0...7 {
             for element in 0...7 {
