@@ -63,11 +63,9 @@ class Board {
     }
 
     // changed to return array of Points, if you search for a pawn, it should return all pawns on the board. If none found, simply return empty array
-<<<<<<< HEAD
+
     static func findPiece(_ piece:Piece, boardstate: [[Piece?]]) -> [Point]{
-=======
-    func findPiece(_ piece:Piece) -> [Point] {
->>>>>>> 39415d9686e829703b13c9e35b23ac905ae7659d
+
         var positions : [Point] = []
         for row in 0...7 {
             for element in 0...7 {
@@ -108,7 +106,6 @@ class Board {
         return blackPieces
     }
     
-
     // Boolean, if king in check return true
     /*func isBlackKingInDanger() -> Bool {
         let kingPos = findPiece(Piece.bKing)
@@ -129,7 +126,6 @@ class Board {
     static func inBounds(_ pos:Point) -> Bool {
         return pos.x <= 7 && pos.y <= 7 && pos.x >= 0 && pos.y >= 0
     }
-
     
     // Moves piece from position to new position... check if move is legal,
     //check if it is a castling move and ensure appropriate pieces get moved and that it is legal

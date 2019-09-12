@@ -32,17 +32,7 @@ class Piece {
         return "Color: \(self.color), Type: \(self.type)" 
     }
 
-<<<<<<< HEAD
-    func legalMoves(pos:Point,boardstate:[[Piece?]]) -> [Point] {
-=======
-    // returns ALL legal moves for the piece in given position, if position is empty return an empty array
-    func legalMoves(_ position:Point, boardstate:[[Piece?]]) -> [Point] {
-        
-    }
-
-   
     func legalMoves(pos:Point, boardState: [[Piece?]]) -> [Point] {
->>>>>>> 39415d9686e829703b13c9e35b23ac905ae7659d
         
         // Is the point in bounds
         guard Board.inBounds(pos) == false else {
@@ -50,21 +40,21 @@ class Piece {
             return []
         }        
         // Is there is a piece        
-        guard Board.pieceAt(pos, boardstate:boardstate) != nil else {
+        guard Board.pieceAt(pos, boardstate:boardState) != nil else {
             print("No piece at position : \(pos)")
             return []
         }
         
         var legalMoves = [Point]()
         
-        let piece = Board.pieceAt(pos,boardstate:boardstate)
-        let piecePos = Board.findPiece(piece!, boardstate:boardstate)[0]
+        let piece = Board.pieceAt(pos,boardstate:boardState)
+        let piecePos = Board.findPiece(piece!, boardstate:boardState)[0]
         
         // legal moves for knight
         if piece!.type == "n" {            
             var legalMovesUnfiltered = [Point(x:piecePos.x+2,y:piecePos.y+1),Point(x:piecePos.x+1,y:piecePos.y+2),
                                         Point(x:piecePos.x-2,y:piecePos.y-1),Point(x:piecePos.x-1,y:piecePos.y-2),
-                                        Point(x:piecePos.x+1,y:piecePos.y-2),Point(x:piecePos.x]
+                                        Point(x:piecePos.x+1,y:piecePos.y-2),Point(x:piecePos.x)]
             
 
         }        
