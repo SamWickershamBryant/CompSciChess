@@ -63,27 +63,43 @@ class Piece {
                                        //Bottom right
                                        Point(x:piecePos.x+2,y:piecePos.y+1),Point(x:piecePos.x+1,y:piecePos.y+2)]
 
+
+
+
+            
+
+            // If you guys know any way to shorten these garbage ass appends lmk or just do em
+
+
             
         // Legal moves for rook
-        } else if piece!.type == "r" { 
-            
-            // vertical up
-            for y in 1...7 {
-                unfilteredLegalMoves.append(Point(x:piecePos.x,y:piecePos.y-y))
+        } else if piece!.type == "r" {            
+            for xy in 1...7 {
+                unfilteredLegalMoves.append(Point(x:piecePos.x,y:piecePos.y+xy))
+                unfilteredLegalMoves.append(Point(x:piecePos.x-xy,y:piecePos.y))
+                unfilteredLegalMoves.append(Point(x:piecePos.x,y:piecePos.y-xy))
+                unfilteredLegalMoves.append(Point(x:piecePos.x+xy,y:piecePos.y))
             }
-            // vertical down
-            for y in 1...7 {
-                unfilteredLegalMoves.append(Point(x:piecePos.x,y:piecePos.y+y))
+        // Legal moves for Bishop 
+        } else if piece!.type == "b" {
+            for xy in 1...7 {
+                unfilteredLegalMoves.append(Point(x:piecePos.x+xy,y:piecePos.y-xy))
+                unfilteredLegalMoves.append(Point(x:piecePos.x-xy,y:piecePos.y-xy))
+                unfilteredLegalMoves.append(Point(x:piecePos.x+xy,y:piecePos.y+xy))
+                unfilteredLegalMoves.append(Point(x:piecePos.x-xy,y:piecePos.y+xy))
             }
-            // Horizontal left
-            for x in 1...7 {
-                unfilteredLegalMoves.append(Point(x:piecePos.x-x,y:piecePos.y))
+        // Legal moves for Queen
+        } else if piece!.type == "q" {
+            for xy in 1...7 {
+                unfilteredLegalMoves.append(Point(x:piecePos.x+xy,y:piecePos.y-xy))
+                unfilteredLegalMoves.append(Point(x:piecePos.x-xy,y:piecePos.y-xy))
+                unfilteredLegalMoves.append(Point(x:piecePos.x+xy,y:piecePos.y+xy))
+                unfilteredLegalMoves.append(Point(x:piecePos.x-xy,y:piecePos.y+xy))
+                unfilteredLegalMoves.append(Point(x:piecePos.x,y:piecePos.y+xy))
+                unfilteredLegalMoves.append(Point(x:piecePos.x-xy,y:piecePos.y))
+                unfilteredLegalMoves.append(Point(x:piecePos.x,y:piecePos.y-xy))
+                unfilteredLegalMoves.append(Point(x:piecePos.x+xy,y:piecePos.y))
             }
-            // Horizontal right
-            for x in 1...7 {
-                unfilteredLegalMoves.append(Point(x:piecePos.x+x,y:piecePos.y))
-            }
-            
         }
         
         return []
