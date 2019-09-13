@@ -54,7 +54,7 @@ class Piece {
         
         // Legal moves for knight
         if piece!.type == "n" {
-                                        //Top left                            
+                                       //Top left                            
             unfilteredLegalMoves =    [Point(x:piecePos.x-2,y:piecePos.y-1),Point(x:piecePos.x-1,y:piecePos.y-2),
                                        //Top right
                                        Point(x:piecePos.x+2,y:piecePos.y-1),Point(x:piecePos.x+1,y:piecePos.y-2),
