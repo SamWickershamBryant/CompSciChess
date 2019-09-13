@@ -32,7 +32,22 @@ class Piece {
         return "Color: \(self.color), Type: \(self.type)" 
     }
 
-    func legalMoves(pos:Point, boardState: [[Piece?]]) -> [Point] {
+    func legalMoves(pos:Point, boardState: [[Piece?]],
+                    enPassantTargets: [Point], unMovedPawns:[Point], castleReady:[Point]) -> [Point] {
+        // ^^ enpassant targets for pawns, un-moved pawns, and kings that can castle (king has not been moved)
+
+        /*
+
+         CASTLE RULES: King can not have moved, rook involved has never moved, king not
+         in check, and king does not cross over or end in square that is attacked.
+
+         The board will say what kings have NOT been moved in the castleReady parameter. this
+         function should check for the other rules. if there are pieces in the way of castle
+         should also be checked...
+        
+         
+         */
+
         
         // Is the point in bounds
         guard Board.inBounds(pos) == false else {
@@ -50,10 +65,12 @@ class Piece {
 
         
         let piece = Board.pieceAt(pos,boardstate:boardState)
-        let piecePos = Board.findPiece(piece!, boardstate:boardState)[0]
+        let piecePos = pos
+        // just use position given
         
         // Legal moves for knight
         if piece!.type == "n" {
+            
                                         //Top left                            
             unfilteredLegalMoves =    [Point(x:piecePos.x-2,y:piecePos.y-1),Point(x:piecePos.x-1,y:piecePos.y-2),
                                        //Top right
@@ -69,7 +86,7 @@ class Piece {
             
 
             // If you guys know any way to shorten these garbage ass appends lmk or just do em
-
+            
 
             
         // Legal moves for rook
@@ -101,6 +118,31 @@ class Piece {
                 unfilteredLegalMoves.append(Point(x:piecePos.x+xy,y:piecePos.y))
             }
         }
+        // Legal moves for Pawn
+        else if piece!.type == "p" {
+
+            if piece!.color == "w" {
+                unfilteredLegalMoves.append(Point(x:piecePos.x, y:piecePos.y - 1))
+                if unMovedPawns.contains(where:{ $0.x == piecePos.x && $0.y == piecePos.y }) {
+                    unfilteredLegalMoves.append(Point(x:piecePos.x, y:piecePos.y - 2))
+                }
+          
+
+                
+
+                
+            }
+            else if piece!.color == "b" {
+                unfilteredLegalMoves.append(Point(x:piecePos.x, y:piecePos.y + 1))
+            }
+            
+        }
+        
+
+            
+
+
+        
         
         return []
     }
