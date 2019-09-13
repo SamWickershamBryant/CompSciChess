@@ -21,7 +21,6 @@ class Piece {
     static let bBishop = Piece(type:"b", color:"b")
     static let bQueen = Piece(type:"q", color:"b")
     static let bKing = Piece(type:"k", color:"b")
-
     
     init(type:String, color:String) {
         self.type = type
