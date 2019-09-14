@@ -1,38 +1,16 @@
 import Igis
 
 class Board {
-    
-     /*
-     Board:
-     Board class will only display and update the board, move pieces, check if king is in check, etc etc...
-     Game class will contruct instances of Board and position the board in an appropriate position,
-     Game class will handle parsing clicks on the board, the Game class will instead
-     parse where the user is clicking and call the board class for board related functions.
-     */
-    
-    var topLeft : Point // Top left of the entire board
-    var size : Int // Only accept integer divisible by 8
-    // size is the length of a side of the -entire- board.
-    //must be divisbile by eight so there is the correct amount of pixels for 64 inner squares.
+
+    var topLeft : Point 
+    var size : Int
     let outLineColor : Color
     let inLineColor : Color
     let squareColor : [Color]
     let lineWidth : Int    
     
-    var boardstate : [[Piece?]] // nil = empty space
-    // example boardstate:
-   /* [ . . . . . . . . ]   <- [Piece.bRook, Piece.wQueen, null, etc] -- each dot is an *optional* Piece, ex: Piece.wKnight
-      [ . . . . . . . . ]
-      [ . . . . . . . . ]
-      [ . . . . . . . . ]
-   8  [ . . . . . . . . ]
-      [ . . . . . . . . ]
-      [ . . . . . . . . ]
-      [ . . . . . . . . ]      
-               8      
-    */
-    // Default starting boardstate for standard game:
-    static let defaultBoardstate = [[Piece.bRook, Piece.bKnight, Piece.bBishop, Piece.bQueen, Piece.bKing, Piece.bBishop, Piece.bKnight, Piece.bRook],
+    var boardstate : [[Piece?]]
+
      /* Board.defaultBoardstate*/   [Piece.bPawn, Piece.bPawn, Piece.bPawn, Piece.bPawn, Piece.bPawn, Piece.bPawn, Piece.bPawn, Piece.bPawn],
                                     [nil, nil, nil, nil, nil, nil, nil, nil],
                                     [nil, nil, nil, nil, nil, nil, nil, nil],
@@ -60,10 +38,7 @@ class Board {
         } else {
             return boardstate[position.y][position.x]!
         }
-    }
-    
-    // changed to return array of Points, if you search for a pawn, it should return all pawns on the board. If none found, simply return empty array
-    
+    } 
     static func findPiece(_ piece:Piece, boardstate: [[Piece?]]) -> [Point]{
         
         var positions : [Point] = []
@@ -126,11 +101,7 @@ class Board {
     static func inBounds(_ pos:Point) -> Bool {
         return pos.x <= 7 && pos.y <= 7 && pos.x >= 0 && pos.y >= 0
     }
-    
-    // Moves piece from position to new position... check if move is legal,
-    //check if it is a castling move and ensure appropriate pieces get moved and that it is legal
-    //Optional string return is placeholder for however we decide to manage tracking what pieces got destroyed, if its now in check or mate, etc..
-    func movePiece(from:Point, to:Point) -> String? {
+        func movePiece(from:Point, to:Point) -> String? {
         return nil
     }
 
@@ -151,8 +122,6 @@ class Board {
 
          //render squares:
 
-        
-        
         func incrementColor(index: inout Int) {
             if index >= squareColor.count - 1 {
                 index = 0
@@ -181,7 +150,6 @@ class Board {
                 
             }
         }
-        
         //render inLines:
         let inStrokeStyle = StrokeStyle(color:inLineColor)
         canvas.render(inStrokeStyle)
