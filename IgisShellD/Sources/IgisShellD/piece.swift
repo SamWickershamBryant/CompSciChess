@@ -11,6 +11,7 @@ class Piece {
         self.color = color
     }
 
+   
     func id() -> String {
         return "Color: \(self.color), Type: \(self.type)" 
     }
