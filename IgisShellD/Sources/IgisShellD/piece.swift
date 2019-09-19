@@ -2,16 +2,19 @@ import Igis
 
 class Piece : CustomStringConvertible {
 
-    let type : String
+   // let type : String - irrelevant now
     let color : String // "b" or "w"
     var position : Point
     var hasMoved : Bool
+
+
     
-    init(type:String, color:String, position: Point, hasMoved: Bool) {
-        self.type = type
+    init(color:String, position: Point, hasMoved: Bool = false) {
+        
         self.color = color
         self.position = position
         self.hasMoved = hasMoved
+        
     }
 
    
@@ -19,9 +22,17 @@ class Piece : CustomStringConvertible {
         return "Color: \(self.color), Type: \(self.type), \(position)" 
     }
 
-    func legalMoves(pos:Point, boardState: [[Piece?]],
-                    enPassantTargets: [Point], unMovedPawns:[Point], castleReady:[Point]) -> [Point] {
+    func moveList() -> [Point] {
+        print("Overwrite this function.")
+        return []
         
+    }
+
+    func legalMoves() -> [Point] {
+        print("Overwrite this function.")
+        return []
+                   
+        /*
         guard Board.inBounds(pos) == false else {
             print("The point is not in bounds")
             return []
@@ -90,8 +101,9 @@ class Piece : CustomStringConvertible {
         }
         return []
     }    
-    
+*/  
     var description : String {
-        return "Type:\(type), Color:\(color), Position:\(position), hasMoved:\(hasMoved)"
+        return "Color:\(color), Position:\(position), hasMoved:\(hasMoved), boardDelegate:\(boardDelegate)"
+        }
     }
 }

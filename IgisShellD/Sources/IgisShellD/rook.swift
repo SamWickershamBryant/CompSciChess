@@ -2,9 +2,16 @@ import Igis
 
 class Rook : Piece {
 
-    init() {
+    override func moveList() -> [Point] {
+       
+    }
+
+    override func legalMoves() -> [Point] {
 
     }
+
+
+    
 
     
 }

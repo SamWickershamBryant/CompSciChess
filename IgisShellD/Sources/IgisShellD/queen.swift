@@ -2,7 +2,11 @@ import Igis
 
 class Queen : Piece {
 
-    init() {
+    override func moveList() -> [Point] {
+       
+    }
+
+    override func legalMoves() -> [Point] {
 
     }
 

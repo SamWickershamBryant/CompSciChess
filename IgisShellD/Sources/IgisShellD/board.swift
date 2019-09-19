@@ -11,13 +11,15 @@ class Board {
     
     var boardstate : [[Piece?]]
 
-     /* Board.defaultBoardstate*/   [Piece.bPawn, Piece.bPawn, Piece.bPawn, Piece.bPawn, Piece.bPawn, Piece.bPawn, Piece.bPawn, Piece.bPawn],
-                                    [nil, nil, nil, nil, nil, nil, nil, nil],
-                                    [nil, nil, nil, nil, nil, nil, nil, nil],
-                                    [nil, nil, nil, nil, nil, nil, nil, nil],
-                                    [nil, nil, nil, nil, nil, nil, nil, nil],
-                                    [Piece.wPawn, Piece.wPawn, Piece.wPawn, Piece.wPawn, Piece.wPawn, Piece.wPawn, Piece.wPawn, Piece.wPawn],
-                                    [Piece.wRook, Piece.wKnight, Piece.wBishop, Piece.wQueen, Piece.wKing, Piece.wBishop, Piece.wKnight, Piece.wRook]]
+    
+    
+        
+    
+   
+   
+   
+   
+   
     
     init(topLeft:Point, size:Int, boardstate:[[Piece?]] = Board.defaultBoardstate,
          outLineColor:Color = Color(.black), inLineColor:Color = Color(.black), squareColor:[Color] = [Color(.gray), Color(.royalblue)],

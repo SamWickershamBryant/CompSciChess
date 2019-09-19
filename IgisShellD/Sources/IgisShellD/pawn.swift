@@ -2,7 +2,11 @@ import Igis
 
 class Pawn : Piece {
 
-    init() {
+    override func moveList() -> [Point] {
+       
+    }
+
+    override func legalMoves() -> [Point] {
 
     }
 

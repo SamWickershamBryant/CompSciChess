@@ -2,9 +2,18 @@ import Igis
 
 class Bishop : Piece {
 
-    init() {
+ 
+    override func moveList() -> [Point] {
+       
+    }
+
+    override func legalMoves() -> [Point] {
 
     }
+
+
+
+
 
 
 }
