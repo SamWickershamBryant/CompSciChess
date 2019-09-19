@@ -87,7 +87,6 @@ class Piece : CustomStringConvertible {
             }
             // Legal moves for Pawn
         } else if piece!.type == "p" {        
-
             if piece!.color == "w" {
                 unfilteredLegalMoves.append(Point(x:piecePos.x, y:piecePos.y - 1))
                 if unMovedPawns.contains(where:{ $0.x == piecePos.x && $0.y == piecePos.y }) {
@@ -96,8 +95,9 @@ class Piece : CustomStringConvertible {
             }
             else if piece!.color == "b" {
                 unfilteredLegalMoves.append(Point(x:piecePos.x, y:piecePos.y + 1))
+                if unMovedPawns.contains(where:{ $0.x == piecePos.x && $0.y == piecePos.y }) {
+                    unfilteredLegalMoves.append(Point(x:piecePos.x, y:piecePos.y + 2)) 
             }
-
         }
         return []
     }    
