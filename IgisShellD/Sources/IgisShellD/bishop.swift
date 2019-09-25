@@ -7,12 +7,17 @@ class Bishop : Piece {
     }
  
     override func moveList() -> [Point] {
-        let unfilteredLegalMoves = [Point(x:self.position.x+1,y:self.position.y+1),Point(x:self.position.x+1,y:self.position.y-1),
-                                    Point(x:self.position.x-1,y:self.position.y-1),Point(x:self.position.x-1,y:self.position.y+1)]
+        var unfilteredLegalMoves = [Point]()
+        for spaces in 1...7{
+        unfilteredLegalMoves.append(Point(x:self.position.x+spaces,y:self.position.y+spaces))
+        unfilteredLegalMoves.append(Point(x:self.position.x+spaces,y:self.position.y-spaces))
+        unfilteredLegalMoves.append(Point(x:self.position.x-spaces,y:self.position.y-spaces))
+        unfilteredLegalMoves.append(Point(x:self.position.x-spaces,y:self.position.y+spaces))
+        }
         return unfilteredLegalMoves.filter({Board.inBounds($0)})
     }
 
-    override func legalMoves() -> [Point] {
+    override func legalMoves(boardstate:[[Piece?]]) -> [Point] {
         return moveList()
     }
 
