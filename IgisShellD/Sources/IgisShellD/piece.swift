@@ -7,6 +7,7 @@ class Piece : CustomStringConvertible {
     var position : Point
     var hasMoved : Bool
 
+    var type: String = ""
 
     
     init(color:String, position: Point, hasMoved: Bool = false) {
@@ -28,7 +29,7 @@ class Piece : CustomStringConvertible {
         
     }
 
-    func legalMoves() -> [Point] {
+    func legalMoves(boardstate:[[Piece?]]) -> [Point] {
         print("Overwrite this function.")
         return []
                    
@@ -103,7 +104,7 @@ class Piece : CustomStringConvertible {
     }    
 */  
     var description : String {
-        return "Color:\(color), Position:\(position), hasMoved:\(hasMoved), boardDelegate:\(boardDelegate)"
+        return "Color:\(color), Position:\(position), hasMoved:\(hasMoved)"
         }
     }
 }

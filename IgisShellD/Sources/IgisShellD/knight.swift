@@ -1,6 +1,10 @@
 import Igis
 
 class Knight : Piece {
+
+    init() {
+        self.type = "n"
+    }
     
     override func moveList() -> [Point] {
         let unfilteredLegalMoves = [Point(x:self.position.x-2,y:self.position.y-1),Point(x:self.position.x-1,y:self.position.y-2),
