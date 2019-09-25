@@ -46,8 +46,11 @@ class Board {
         var positions : [Point] = []
         for row in 0...7 {
             for element in 0...7 {
-                if boardstate[row][element] === piece {
-                    positions.append(Point(x:element,y:row))
+                if boardstate[row][element] != nil {
+                    if boardstate[row][element]!.type == piece.type &&
+                         boardstate[row][element]!.color == piece.color {
+                        positions.append (boardstate[row][element]!.position)
+                    }
                 }
             }
         }
