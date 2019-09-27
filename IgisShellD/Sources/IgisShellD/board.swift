@@ -33,6 +33,8 @@ class Board {
         self.squareColor = squareColor
         self.lineWidth = lineWidth
     }
+
+    
  
     static func pieceAt(_ position:Point, boardstate: [[Piece?]]) -> Piece? {        
         if boardstate[position.y][position.x] == nil {
