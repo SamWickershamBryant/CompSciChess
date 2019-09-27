@@ -7,10 +7,9 @@ class Board {
     let outLineColor : Color
     let inLineColor : Color
     let squareColor : [Color]
-    let lineWidth : Int    
-    
+    let lineWidth : Int        
     var boardstate : [[Piece?]]
-
+    var enPassant : [Point]
     
     
         
@@ -43,14 +42,14 @@ class Board {
             return boardstate[position.y][position.x]!
         }
     } 
-    static func findPiece(_ piece:Piece, boardstate: [[Piece?]]) -> [Point]{
+    static func findPiece(_ color:String,_ type:String, boardstate: [[Piece?]]) -> [Point]{
         
         var positions : [Point] = []
         for row in 0...7 {
             for element in 0...7 {
                 if boardstate[row][element] != nil {
-                    if boardstate[row][element]!.type == piece.type &&
-                         boardstate[row][element]!.color == piece.color {
+                    if boardstate[row][element]!.type == type &&
+                         boardstate[row][element]!.color == color {
                         positions.append (boardstate[row][element]!.position)
                     }
                 }
@@ -108,8 +107,13 @@ class Board {
     static func inBounds(_ pos:Point) -> Bool {
         return pos.x <= 7 && pos.y <= 7 && pos.x >= 0 && pos.y >= 0
     }
-        func movePiece(from:Point, to:Point) -> String? {
-        return nil
+    func movePiece(from:Point, to:Point) {
+        guard Board.pieceAt(from,boardstate:boardstate) != nil else {
+            print("No piece at pos: \(from.x),\(from.y)")
+        }
+
+        // not finished
+        
     }
 
     // moveBoard moves the entire board to a position (topleft = destination)
