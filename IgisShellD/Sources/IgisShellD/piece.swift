@@ -6,7 +6,6 @@ class Piece : CustomStringConvertible {
     let color : String // "b" or "w"
     var position : Point
     var hasMoved : Bool
-
     var type: String = ""
 
     

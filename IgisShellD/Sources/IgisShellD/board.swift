@@ -10,23 +10,13 @@ class Board {
     let lineWidth : Int        
     var boardstate : [[Piece?]]
     var enPassant : [Point]
-    
-    
-        
-    
-   
-   
-   
-   
-   
-    
+          
     init(topLeft:Point, size:Int, boardstate:[[Piece?]] = Board.defaultBoardstate,
          outLineColor:Color = Color(.black), inLineColor:Color = Color(.black), squareColor:[Color] = [Color(.gray), Color(.royalblue)],
          lineWidth:Int = 2){
         self.topLeft = topLeft
         self.size = size // input not sanitized... yet (MUST be divisible by 8)
         self.boardstate = boardstate
-
         self.outLineColor = outLineColor
         self.inLineColor = inLineColor
         self.squareColor = squareColor
@@ -34,7 +24,7 @@ class Board {
     }
 
     
- 
+    
     static func pieceAt(_ position:Point, boardstate: [[Piece?]]) -> Piece? {        
         if boardstate[position.y][position.x] == nil {
             return nil
@@ -57,14 +47,28 @@ class Board {
         }
         return positions
     }
-
-    func aliveWhitePieces() -> [Piece] { 
+    // This will display the board without having to use images
+    func displayBoard() {
+        print("   0   1   2   3   4   5   6   7  ")
+        var count = 0
+        for row in 0...7 {
+            for column in 0...7 {
+                if column == 0 {
+                    print("\(count)", terminator: " ")
+                }
+                boardstate[row][column] != nil ? print(" \(boardstate[row][column]!.color)\(boardstate[row][column]!.type) ",terminator: " ") : print(" - ", terminator: " ")
+            }            
+            print("\n")
+            count += 1
+        }
+    }    
+    func alivePieces(side:String) -> [Piece] { 
         var whitePieces = [Piece]()
         for row in 0...7 {
             for column in 0...7 {
                 let piece = boardstate[row][column]
                 if piece != nil {
-                    if piece!.color == "w" {
+                    if piece!.color == side {
                         whitePieces.append(piece!)
                     }
                 }
@@ -72,50 +76,37 @@ class Board {
         }
         return whitePieces
     }
-    func aliveBlackPieces() -> [Piece] { 
-        var blackPieces = [Piece]()
-        for row in 0...7 {
-            for column in 0...7 {
-                let piece = boardstate[row][column]
-                if piece != nil {
-                    if piece!.color == "b" {
-                        blackPieces.append(piece!)
-                    }
-                }
-            }
-        }
-        return blackPieces
-    }
-    
-    // Boolean, if king in check return true
-    /*func isBlackKingInDanger() -> Bool {
-        let kingPos = findPiece(Piece.bKing)
-        let whitePieces = aliveWhitePieces()
-        for wPiece in whitePieces {
-            if wPiece.legalMoves == kingPos {
-               }
-        }
-        
-        return false
-    }
- 
-    func isWhiteKingInDanger() -> Bool {
-        
-        return false
-    }*/
-    
     static func inBounds(_ pos:Point) -> Bool {
         return pos.x <= 7 && pos.y <= 7 && pos.x >= 0 && pos.y >= 0
     }
+    func setPositions() {
+        for x in 0...7 {
+            for y in 0...7 {
+                if boardstate[y][x] != nil {
+                    let piece = boardstate[y][x]
+                    piece!.position = Point(x:x,y:y)
+                }
+            }
+        }
+    }    
     func movePiece(from:Point, to:Point) {
         guard Board.pieceAt(from,boardstate:boardstate) != nil else {
             print("No piece at pos: \(from.x),\(from.y)")
         }
+        guard Board.inBounds(to) != false else {
+            print("Move to pos is out of bounds")
+            return
+        }
+        let piece = Board.pieceAt(from,boardstate:boardstate)
 
-        // not finished
-        
+        if Board.pieceAt(Point(x:to.x,y:to.y),boardstate:boardstate) != nil {
+            // if a pieces point is -1,-1 its considered "dead"
+            Board.pieceAt(Point(x:to.x,y:to.y),boardstate:boardstate)!.position = Point(x:-1,y:-1)
+        }
+        boardstate[to.y][to.x] = piece
+        boardstate[from.y][from.x] = nil
     }
-
+    
     // moveBoard moves the entire board to a position (topleft = destination)
     func moveBoard(topLeft:Point) {
         self.topLeft = topLeft
