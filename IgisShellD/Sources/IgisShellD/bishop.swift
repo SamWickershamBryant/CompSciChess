@@ -2,9 +2,15 @@ import Igis
 
 class Bishop : Piece {
 
-    init() {
+
+
+    
+    init(_ color:String) {
+        super.init(color)
         self.type = "b"
     }
+
+    
  
     override func moveList() -> [Point] {
         var unfilteredLegalMoves = [Point]()
@@ -18,7 +24,7 @@ class Bishop : Piece {
     }
 
     override func legalMoves(boardstate:[[Piece?]]) -> [Point] {
-        return moveList()
+        return parseBishopMoves(boardstate:boardstate)
     }
 
 

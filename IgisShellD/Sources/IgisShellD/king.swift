@@ -2,16 +2,20 @@ import Igis
 
 class King : Piece {
 
-    init() {
+
+
+    
+    init(_ color:String) {
+        super.init(color)
         self.type = "k"
     }
     
     override func moveList() -> [Point] {
-       
+        return []
     }
 
-    override func legalMoves() -> [Point] {
-
+    override func legalMoves(boardstate:[[Piece?]]) -> [Point] {
+        return []
     }
 
 

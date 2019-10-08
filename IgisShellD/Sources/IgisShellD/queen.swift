@@ -2,7 +2,11 @@ import Igis
 
 class Queen : Piece {
 
-    init() {
+
+
+    
+    init(_ color:String) {
+        super.init(color)
         self.type = "q"
     }
     
@@ -27,7 +31,7 @@ class Queen : Piece {
     }
 
     override func legalMoves(boardstate:[[Piece?]]) -> [Point] {
-        
+        return []
     }
 
     

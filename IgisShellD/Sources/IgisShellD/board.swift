@@ -10,6 +10,18 @@ class Board {
     let lineWidth : Int        
     var boardstate : [[Piece?]]
     var enPassant : [Point]
+
+    static let defaultBoardstate = [[Rook("b"), Knight("b"), Bishop("b"), Queen("b"), King("b"), Bishop("b"), Knight("b"), Rook("b")],
+                                    [Pawn("b"),Pawn("b"),Pawn("b"),Pawn("b"),Pawn("b"),Pawn("b"),Pawn("b"),Pawn("b")],
+                                    [nil, nil, nil, nil, nil, nil, nil, nil],
+                                    [nil, nil, nil, nil, Bishop("b"), nil, nil, nil],
+                                    [nil, nil, nil, nil, nil, nil, nil, nil],
+                                    [nil, nil, nil, nil, nil, nil, nil, nil],
+                                    [Pawn("w"),Pawn("w"),Pawn("w"),Pawn("w"),Pawn("w"),Pawn("w"),Pawn("w"),Pawn("w")],
+                                    [Rook("w"), Knight("w"), Bishop("w"), Queen("w"), King("w"), Bishop("w"), Knight("w"), Rook("w")],
+
+    ]
+    
           
     init(topLeft:Point, size:Int, boardstate:[[Piece?]] = Board.defaultBoardstate,
          outLineColor:Color = Color(.black), inLineColor:Color = Color(.black), squareColor:[Color] = [Color(.gray), Color(.royalblue)],
@@ -21,6 +33,18 @@ class Board {
         self.inLineColor = inLineColor
         self.squareColor = squareColor
         self.lineWidth = lineWidth
+        self.enPassant = []
+    }
+ 
+    func setPositions() {
+        for row in 0 ... 7 {
+            for piece in 0 ... 7 {
+                let currentPiece = boardstate[row][piece]
+                if currentPiece != nil {
+                    currentPiece!.position = Point(x:piece, y:row)
+                }
+            }
+        }
     }
 
     
@@ -79,19 +103,11 @@ class Board {
     static func inBounds(_ pos:Point) -> Bool {
         return pos.x <= 7 && pos.y <= 7 && pos.x >= 0 && pos.y >= 0
     }
-    func setPositions() {
-        for x in 0...7 {
-            for y in 0...7 {
-                if boardstate[y][x] != nil {
-                    let piece = boardstate[y][x]
-                    piece!.position = Point(x:x,y:y)
-                }
-            }
-        }
-    }    
+       
     func movePiece(from:Point, to:Point) {
         guard Board.pieceAt(from,boardstate:boardstate) != nil else {
             print("No piece at pos: \(from.x),\(from.y)")
+            return
         }
         guard Board.inBounds(to) != false else {
             print("Move to pos is out of bounds")
@@ -103,6 +119,7 @@ class Board {
             // if a pieces point is -1,-1 its considered "dead"
             Board.pieceAt(Point(x:to.x,y:to.y),boardstate:boardstate)!.position = Point(x:-1,y:-1)
         }
+        piece!.position = Point(x:to.x, y:to.y)
         boardstate[to.y][to.x] = piece
         boardstate[from.y][from.x] = nil
     }
@@ -115,6 +132,61 @@ class Board {
     
     func resizeBoard(size:Int) {
         self.size = size
+    }
+
+    func renderMoves(of:Point, canvas:Canvas) {
+        let piece = boardstate[of.y][of.x]
+        if piece == nil {
+            print("cant render moves of empty space!")
+            return
+        } else {
+            let sideLength = size / 8
+            
+            
+            let thisPiecePosOnBoard = Point(x:topLeft.x + (of.x * sideLength) + (sideLength / 2),
+                                          y:topLeft.y + (of.y * sideLength) + (sideLength / 2))
+            let thisPieceCircle = Ellipse(center: thisPiecePosOnBoard, radiusX: sideLength  / 4, radiusY: sideLength / 4, fillMode:.fill)
+            let moveColor = Color(.brown)
+            canvas.render(FillStyle(color:moveColor))
+            canvas.render(thisPieceCircle)
+            let legalMoves = piece!.legalMoves(boardstate:boardstate)
+            if legalMoves.count == 0 {
+                print("no legal moves!")
+            } else {
+                for legalMove in legalMoves {
+                    let piecePosOnBoard = Point(x:topLeft.x + (legalMove.x * sideLength) + (sideLength / 2),
+                                                y:topLeft.y + (legalMove.y * sideLength) + (sideLength / 2))
+                    let pieceCircle = Ellipse(center:piecePosOnBoard, radiusX: sideLength / 4, radiusY: sideLength / 4, fillMode:.fill)
+                    canvas.render(pieceCircle)
+                }
+            }
+        }
+        
+    }
+
+    func renderPiecesAsText(canvas:Canvas) {
+        let sideLength = size / 8
+        for row in 0 ... 7 {
+            for piece in 0 ... 7 {
+                //boardstate[row][piece]
+                let location = Point(x:topLeft.x + (piece * sideLength) + (sideLength / 2),
+                                     y:topLeft.y + (row * sideLength) + (sideLength / 2))
+                let fontSize = 10
+                let pieceToDisplay = boardstate[row][piece]
+                if pieceToDisplay != nil {
+                    let text = pieceToDisplay!.textDisplay(location:location, fontSize:fontSize)
+                    let blackColor = Color(.black)
+                    let whiteColor = Color(.white)
+                    if pieceToDisplay!.color == "w" {
+                        canvas.render(FillStyle(color:whiteColor))
+                    } else {
+                        canvas.render(FillStyle(color:blackColor))
+                    }
+                    
+                    canvas.render(text)
+                }
+            }
+        }
     }
 
     func renderBoard(canvas:Canvas) {

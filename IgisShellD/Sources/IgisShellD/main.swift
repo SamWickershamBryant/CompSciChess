@@ -14,13 +14,17 @@ class Painter : PainterBase {
     override func setup(canvas:Canvas) {
         let newBoard = Board(topLeft:Point(x:100,y:100), size:512, boardstate: Board.defaultBoardstate)
         //      print(newBoard.boardstate)
+        newBoard.setPositions()
         newBoard.renderBoard(canvas:canvas)
+        newBoard.renderMoves(of:Point(x:4,y:3), canvas:canvas)
+        
+        newBoard.renderPiecesAsText(canvas:canvas)
 
-        let wKingsOnBoard = newBoard.findPiece(Piece.wKing)
-        if wKingsOnBoard.count == 1 {
-            print("nice")
-            print(wKingsOnBoard[0].x,wKingsOnBoard[0].y)
-        }
+       
+        print("nice")
+       
+       
+       
 //        print("Piece at (4,0) is \(newBoard.pieceAt(Point(x:4,y:0))!.type)")
   //      print("Piece at (2,3) is \(newBoard.pieceAt(Point(x:2,y:3)))")
     //    print("Piece at (4,6) is \(newBoard.pieceAt(Point(x:4,y:6))!.type)")

@@ -2,17 +2,22 @@ import Igis
 
 class Rook : Piece {
 
-    init() {
+
+
+
+    
+    init(_ color:String) {
+        super.init(color)
         self.type = "r"
     }
 
     
     override func moveList() -> [Point] {
-       
+        return []
     }
 
-    override func legalMoves() -> [Point] {
-
+    override func legalMoves(boardstate:[[Piece?]]) -> [Point] {
+        return []
     }
 
 

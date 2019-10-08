@@ -2,20 +2,108 @@ import Igis
 
 class Piece : CustomStringConvertible {
 
-   // let type : String - irrelevant now
+
     let color : String // "b" or "w"
     var position : Point
     var hasMoved : Bool
     var type: String = ""
 
     
-    init(color:String, position: Point, hasMoved: Bool = false) {
+    init(_ color:String, position: Point = Point(x:-1, y:-1), hasMoved: Bool = false) {
         
         self.color = color
         self.position = position
         self.hasMoved = hasMoved
         
     }
+
+    func textDisplay(location:Point, fontSize:Int) -> Text {
+        let letter = Text(location:location, text:"\(self.type)\(self.position.x)\(self.position.y)")
+        letter.font = "\(String(fontSize))pt Helvetica"
+        return letter
+    }
+
+    func parseBishopMoves(boardstate:[[Piece?]]) -> [Point] {
+
+        var unfilteredLegalMoves = [Point]()
+
+        for tlSpaces in 1 ... 7 {
+            // y --, x --
+            let point = Point(x:self.position.x - tlSpaces, y:self.position.y - tlSpaces)
+            if !Board.inBounds(point) {
+                break
+            } else {
+                let pendingLocation : Piece? = Board.pieceAt(point, boardstate:boardstate)
+                if pendingLocation == nil {
+                    unfilteredLegalMoves.append(point)
+                } else if !(pendingLocation!.color == self.color) {
+                    unfilteredLegalMoves.append(point)
+                    break
+                } else {
+                    break
+                }
+            }
+        }
+
+        for trSpaces in 1 ... 7 {
+            // y --, x ++
+            let point = Point(x:self.position.x + trSpaces, y:self.position.y - trSpaces)
+            if !Board.inBounds(point) {
+                break
+            } else {
+                let pendingLocation : Piece? = Board.pieceAt(point, boardstate:boardstate)
+                if pendingLocation == nil {
+                    unfilteredLegalMoves.append(point)
+                } else if !(pendingLocation!.color == self.color) {
+                    unfilteredLegalMoves.append(point)
+                    break
+                } else {
+                    break
+                }
+            }
+        }
+
+        for blSpaces in 1 ... 7 {
+            // y ++, x --
+            let point = Point(x:self.position.x - blSpaces, y:self.position.y + blSpaces)
+            if !Board.inBounds(point) {
+                break
+            } else {
+                let pendingLocation : Piece? = Board.pieceAt(point, boardstate:boardstate)
+                if pendingLocation == nil {
+                    unfilteredLegalMoves.append(point)
+                } else if !(pendingLocation!.color == self.color) {
+                    unfilteredLegalMoves.append(point)
+                    break
+                } else {
+                    break
+                }
+            }
+        }
+
+        for brSpaces in 1 ... 7 {
+            // y ++, x ++
+            let point = Point(x:self.position.x + brSpaces, y:self.position.y + brSpaces)
+            if !Board.inBounds(point) {
+                break
+            } else {
+                let pendingLocation : Piece? = Board.pieceAt(point, boardstate:boardstate)
+                if pendingLocation == nil {
+                    unfilteredLegalMoves.append(point)
+                } else if !(pendingLocation!.color == self.color) {
+                    unfilteredLegalMoves.append(point)
+                    break
+                } else {
+                    break
+                }
+            }
+        }
+        
+        return unfilteredLegalMoves
+        
+    }
+
+    
 
    
     func id() -> String {
@@ -31,6 +119,13 @@ class Piece : CustomStringConvertible {
     func legalMoves(boardstate:[[Piece?]]) -> [Point] {
         print("Overwrite this function.")
         return []
+    }
+    
+    var description : String {
+        return "\(color)\(type)"
+        
+    }
+}
                    
         /*
         guard Board.inBounds(pos) == false else {
@@ -102,8 +197,4 @@ class Piece : CustomStringConvertible {
         return []
     }    
 */  
-    var description : String {
-        return "Color:\(color), Position:\(position), hasMoved:\(hasMoved)"
-        }
-    }
-}
+

@@ -2,7 +2,11 @@ import Igis
 
 class Knight : Piece {
 
-    init() {
+
+
+    
+    init(_ color:String) {
+        super.init(color)
         self.type = "n"
     }
     
@@ -14,7 +18,7 @@ class Knight : Piece {
         return unfilteredLegalMoves.filter({Board.inBounds($0)})
     }
 
-    override func legalMoves() -> [Point] {
+    override func legalMoves(boardstate:[[Piece?]]) -> [Point] {
         // only have to check if the king gets put in danger because knight jumps high as a mf
         return moveList()
     }

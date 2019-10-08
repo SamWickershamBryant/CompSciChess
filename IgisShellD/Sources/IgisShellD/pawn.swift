@@ -2,17 +2,21 @@ import Igis
 
 class Pawn : Piece {
 
-    init() {
+
+
+    
+    init(_ color:String) {
+        super.init(color)
         self.type = "p"
     }
 
     
     override func moveList() -> [Point] {
-       
+        return []
     }
 
-    override func legalMoves() -> [Point] {
-
+    override func legalMoves(boardstate:[[Piece?]]) -> [Point] {
+        return []
     }
 
     
