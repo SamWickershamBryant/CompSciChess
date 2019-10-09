@@ -21,6 +21,7 @@ class Painter : PainterBase {
        // newBoard.renderMoves(of:Point(x:2,y:4), canvas:canvas)
         
         newBoard.renderPiecesAsText(canvas:canvas)
+        newBoard.debug()
 
        
         print("nice")

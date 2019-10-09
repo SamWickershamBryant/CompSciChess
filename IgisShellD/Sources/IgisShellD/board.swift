@@ -16,13 +16,19 @@ class Board {
     static let defaultBoardstate = [[Rook("b"), Knight("b"), Bishop("b"), Queen("b"), King("b"), Bishop("b"), Knight("b"), Rook("b")],
                                     [Pawn("b"),Pawn("b"),Pawn("b"),Pawn("b"),Pawn("b"),Pawn("b"),Pawn("b"),Pawn("b")],
                                     [nil, nil, nil, nil, nil, nil, nil, nil],
-                                    [nil, nil, nil, Queen("w"), Bishop("b"), nil, nil, nil],
+                                    [nil, nil, nil, Queen("w"), Bishop("b"), King("b"), nil, nil],
                                     [nil, nil, Rook("w"), nil, nil, nil, nil, nil],
                                     [nil, nil, nil, nil, nil, nil, nil, nil],
                                     [Pawn("w"),Pawn("w"),Pawn("w"),Pawn("w"),Pawn("w"),Pawn("w"),Pawn("w"),Pawn("w")],
                                     [Rook("w"), Knight("w"), Bishop("w"), Queen("w"), King("w"), Bishop("w"), Knight("w"), Rook("w")],
 
     ]
+
+    func debug() {
+        print("true:\(Board.moveLeavesKingInDanger(from:Point(x:4,y:3), to:Point(x:4,y:2), boardstate:boardstate))")
+        print("false:\(Board.moveLeavesKingInDanger(from:Point(x:5,y:3), to:Point(x:5,y:2), boardstate:boardstate))")
+        print("true:\(Board.moveLeavesKingInDanger(from:Point(x:5,y:3), to:Point(x:5,y:5), boardstate:boardstate))")
+    }
     
           
     init(topLeft:Point, size:Int, boardstate:[[Piece?]] = Board.defaultBoardstate, whosMove : String = "w",
@@ -109,6 +115,10 @@ class Board {
     }
        
     func movePiece(from:Point, to:Point) {
+        guard Board.inBounds(from) != false else {
+            print("Starting piece out of bounds")
+            return
+        }
         guard Board.pieceAt(from,boardstate:boardstate) != nil else {
             print("No piece at pos: \(from.x),\(from.y)")
             return
@@ -141,6 +151,59 @@ class Board {
     
     func resizeBoard(size:Int) {
         self.size = size
+    }
+
+    static func moveLeavesKingInDanger(from:Point, to:Point, boardstate:[[Piece?]]) -> Bool {
+        var testBoard = boardstate
+        guard Board.inBounds(from) != false else {
+            print("Starting piece out of bounds")
+            return false
+        }
+        guard Board.pieceAt(from, boardstate:testBoard) != nil else {
+            print("No piece at pos : \(from.x), \(from.y)")
+            return false
+        }
+        guard Board.inBounds(to) != false else {
+            print("Move to pos is out of bounds")
+            return false
+        }
+        let piece = Board.pieceAt(from, boardstate:testBoard)
+        var enemyTeam = ""
+        if piece!.color == "w" {
+            enemyTeam = "b"
+        } else if piece!.color == "b" {
+            enemyTeam = "w"
+        }
+        
+        
+
+        testBoard[to.y][to.x] = piece! 
+        testBoard[from.y][from.x] = nil
+
+        
+       
+        for row in 0 ... 7 {
+            for column in 0 ... 7 {
+                let thisPiece = testBoard[row][column]
+                if thisPiece != nil{
+                    if thisPiece!.color == enemyTeam {
+                        let legalMoves = thisPiece!.legalMoves(boardstate:testBoard)
+                        if legalMoves.filter({
+                            Board.pieceAt($0, boardstate:testBoard) != nil}).filter({
+                            Board.pieceAt($0, boardstate:testBoard)!.type == "k"}).count > 0 {
+                            return true
+                        }
+                        
+                       
+                    }
+                }
+            }
+        }
+
+        return false
+        
+
+        
     }
 
     func renderMoves(of:Point, canvas:Canvas) {
