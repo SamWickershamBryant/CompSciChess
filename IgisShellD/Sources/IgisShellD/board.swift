@@ -10,12 +10,14 @@ class Board {
     let lineWidth : Int        
     var boardstate : [[Piece?]]
     var enPassant : [Point]
+    var whosMove : String
+    var kingInCheck : Bool
 
     static let defaultBoardstate = [[Rook("b"), Knight("b"), Bishop("b"), Queen("b"), King("b"), Bishop("b"), Knight("b"), Rook("b")],
                                     [Pawn("b"),Pawn("b"),Pawn("b"),Pawn("b"),Pawn("b"),Pawn("b"),Pawn("b"),Pawn("b")],
                                     [nil, nil, nil, nil, nil, nil, nil, nil],
-                                    [nil, nil, nil, nil, Bishop("b"), nil, nil, nil],
-                                    [nil, nil, nil, nil, nil, nil, nil, nil],
+                                    [nil, nil, nil, Queen("w"), Bishop("b"), nil, nil, nil],
+                                    [nil, nil, Rook("w"), nil, nil, nil, nil, nil],
                                     [nil, nil, nil, nil, nil, nil, nil, nil],
                                     [Pawn("w"),Pawn("w"),Pawn("w"),Pawn("w"),Pawn("w"),Pawn("w"),Pawn("w"),Pawn("w")],
                                     [Rook("w"), Knight("w"), Bishop("w"), Queen("w"), King("w"), Bishop("w"), Knight("w"), Rook("w")],
@@ -23,7 +25,7 @@ class Board {
     ]
     
           
-    init(topLeft:Point, size:Int, boardstate:[[Piece?]] = Board.defaultBoardstate,
+    init(topLeft:Point, size:Int, boardstate:[[Piece?]] = Board.defaultBoardstate, whosMove : String = "w",
          outLineColor:Color = Color(.black), inLineColor:Color = Color(.black), squareColor:[Color] = [Color(.gray), Color(.royalblue)],
          lineWidth:Int = 2){
         self.topLeft = topLeft
@@ -34,6 +36,8 @@ class Board {
         self.squareColor = squareColor
         self.lineWidth = lineWidth
         self.enPassant = []
+        self.whosMove = whosMove
+        self.kingInCheck = false
     }
  
     func setPositions() {
@@ -122,6 +126,11 @@ class Board {
         piece!.position = Point(x:to.x, y:to.y)
         boardstate[to.y][to.x] = piece
         boardstate[from.y][from.x] = nil
+        if  piece!.color == "w" {
+            whosMove = "b"
+        } else if piece!.color == "b" {
+            whosMove = "w"
+        }
     }
     
     // moveBoard moves the entire board to a position (topleft = destination)

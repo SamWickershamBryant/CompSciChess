@@ -16,7 +16,9 @@ class Painter : PainterBase {
         //      print(newBoard.boardstate)
         newBoard.setPositions()
         newBoard.renderBoard(canvas:canvas)
-        newBoard.renderMoves(of:Point(x:4,y:3), canvas:canvas)
+       // newBoard.renderMoves(of:Point(x:4,y:3), canvas:canvas)
+        newBoard.renderMoves(of:Point(x:3,y:3), canvas:canvas)
+       // newBoard.renderMoves(of:Point(x:2,y:4), canvas:canvas)
         
         newBoard.renderPiecesAsText(canvas:canvas)
 

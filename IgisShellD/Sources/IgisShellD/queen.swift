@@ -31,7 +31,7 @@ class Queen : Piece {
     }
 
     override func legalMoves(boardstate:[[Piece?]]) -> [Point] {
-        return []
+        return parseBishopMoves(boardstate:boardstate) + parseRookMoves(boardstate:boardstate)
     }
 
     

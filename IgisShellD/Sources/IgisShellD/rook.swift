@@ -17,7 +17,7 @@ class Rook : Piece {
     }
 
     override func legalMoves(boardstate:[[Piece?]]) -> [Point] {
-        return []
+        return parseRookMoves(boardstate:boardstate)
     }
 
 

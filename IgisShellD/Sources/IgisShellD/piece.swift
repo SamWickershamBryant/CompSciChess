@@ -103,6 +103,87 @@ class Piece : CustomStringConvertible {
         
     }
 
+    func parseRookMoves(boardstate:[[Piece?]]) -> [Point] {
+        var unfilteredLegalMoves = [Point]()
+
+        for uSpaces in 1 ... 7 {
+            // y --
+            let point = Point(x:self.position.x, y:self.position.y - uSpaces)
+            if !Board.inBounds(point) {
+                break
+            } else {
+                let pendingLocation : Piece? = Board.pieceAt(point, boardstate:boardstate)
+                if pendingLocation == nil {
+                    unfilteredLegalMoves.append(point)
+                } else if !(pendingLocation!.color == self.color) {
+                    unfilteredLegalMoves.append(point)
+                    break
+                } else {
+                    break
+                }
+            }
+        }
+
+        for dSpaces in 1 ... 7 {
+            // y ++
+            let point = Point(x:self.position.x, y:self.position.y + dSpaces)
+            if !Board.inBounds(point) {
+                break
+            } else {
+                let pendingLocation : Piece? = Board.pieceAt(point, boardstate:boardstate)
+                if pendingLocation == nil {
+                    unfilteredLegalMoves.append(point)
+                } else if !(pendingLocation!.color == self.color) {
+                    unfilteredLegalMoves.append(point)
+                    break
+                } else {
+                    break
+                }
+            }
+        }
+
+        for lSpaces in 1 ... 7 {
+            // x --
+            let point = Point(x:self.position.x - lSpaces, y:self.position.y)
+            if !Board.inBounds(point) {
+                break
+            } else {
+                let pendingLocation : Piece? = Board.pieceAt(point, boardstate:boardstate)
+                if pendingLocation == nil {
+                    unfilteredLegalMoves.append(point)
+                } else if !(pendingLocation!.color == self.color) {
+                    unfilteredLegalMoves.append(point)
+                    break
+                } else {
+                    break
+                }
+            }
+        }
+
+        for rSpaces in 1 ... 7 {
+            // x ++
+            let point = Point(x:self.position.x + rSpaces, y:self.position.y)
+            if !Board.inBounds(point) {
+                break
+            } else {
+                let pendingLocation : Piece? = Board.pieceAt(point, boardstate:boardstate)
+                if pendingLocation == nil {
+                    unfilteredLegalMoves.append(point)
+                } else if !(pendingLocation!.color == self.color) {
+                    unfilteredLegalMoves.append(point)
+                    break
+                } else {
+                    break
+                }
+            }
+        }
+
+        return unfilteredLegalMoves
+        
+    }
+
+    
+
     
 
    
