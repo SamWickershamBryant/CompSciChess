@@ -12,7 +12,8 @@ class Pawn : Piece {
 
     
     override func moveList() -> [Point] {
-        return []
+       
+        
     }
 
     override func legalMoves(boardstate:[[Piece?]]) -> [Point] {
