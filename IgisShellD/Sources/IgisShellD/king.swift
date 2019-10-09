@@ -10,7 +10,7 @@ class King : Piece {
         self.type = "k"
     }
     
-    override func moveList() -> [Point] {
+    override func moveList(boardstate:[[Piece?]]) -> [Point] {
         return []
     }
 

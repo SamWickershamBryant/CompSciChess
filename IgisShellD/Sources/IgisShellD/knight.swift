@@ -10,7 +10,7 @@ class Knight : Piece {
         self.type = "n"
     }
     
-    override func moveList() -> [Point] {
+    override func moveList(boardstate:[[Piece?]]) -> [Point] {
         let unfilteredLegalMoves = [Point(x:self.position.x-2,y:self.position.y-1),Point(x:self.position.x-1,y:self.position.y-2),
                                     Point(x:self.position.x+2,y:self.position.y-1),Point(x:self.position.x+1,y:self.position.y-2),
                                     Point(x:self.position.x-2,y:self.position.y+1),Point(x:self.position.x-1,y:self.position.y+2),

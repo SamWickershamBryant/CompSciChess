@@ -191,7 +191,7 @@ class Piece : CustomStringConvertible {
         return "Color: \(self.color), Type: \(self.type), \(position)" 
     }
 
-    func moveList() -> [Point] {
+    func moveList(boardstate:[[Piece?]]) -> [Point] {
         print("Overwrite this function.")
         return []
         

@@ -10,7 +10,7 @@ class Queen : Piece {
         self.type = "q"
     }
     
-    override func moveList() -> [Point] {
+    override func moveList(boardstate:[[Piece?]]) -> [Point] {
 
         var unfilteredLegalMoves : [Point] = []
 

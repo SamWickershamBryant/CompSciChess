@@ -11,7 +11,7 @@ class Pawn : Piece {
     }
 
     
-    override func moveList() -> [Point] {
+    override func moveList(boardstate:[[Piece?]]) -> [Point] {
        
         
     }

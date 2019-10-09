@@ -12,7 +12,7 @@ class Rook : Piece {
     }
 
     
-    override func moveList() -> [Point] {
+    override func moveList(boardstate:[[Piece?]]) -> [Point] {
         return []
     }
 
