@@ -190,8 +190,8 @@ class Board {
                 let thisPiece = testBoard[row][column]
                 if thisPiece != nil{
                     if thisPiece!.color == enemyTeam {
-                        let legalMoves = thisPiece!.legalMoves(boardstate:testBoard)
-                        if legalMoves.filter({
+                        let moveList = thisPiece!.moveList(boardstate:testBoard)
+                        if moveList.filter({
                             Board.pieceAt($0, boardstate:testBoard) != nil}).filter({
                             Board.pieceAt($0, boardstate:testBoard)!.type == "k"}).count > 0 {
                             return true
