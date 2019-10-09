@@ -127,11 +127,28 @@ class Board {
             print("Move to pos is out of bounds")
             return
         }
+        
         let piece = Board.pieceAt(from,boardstate:boardstate)
 
-        if Board.pieceAt(Point(x:to.x,y:to.y),boardstate:boardstate) != nil {
-            // if a pieces point is -1,-1 its considered "dead"            
-            Board.pieceAt(Point(x:to.x,y:to.y),boardstate:boardstate)!.position = Point(x:-1,y:-1)
+        if piece!.type != "p" {
+            if Board.pieceAt(Point(x:to.x,y:to.y),boardstate:boardstate) != nil {
+                // if a pieces point is -1,-1 its considered "dead"            
+                Board.pieceAt(Point(x:to.x,y:to.y),boardstate:boardstate)!.position = Point(x:-1,y:-1)
+            }
+        } else { // pawn garbage
+            if abs(to.y - from.y) == 2 && abs(to.x - from.x) == 0 {
+                piece!.enPassantTarget = true
+                enPassant.append(to)
+            } else if piece!.color == "w" {
+           
+           
+                // deal with en passant
+           
+           
+           
+            } else if piece!.color == "b" {
+                // ditto
+            }
         }
         
         piece!.position = Point(x:to.x, y:to.y)

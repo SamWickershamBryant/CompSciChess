@@ -8,12 +8,15 @@ class Piece : CustomStringConvertible {
     var hasMoved : Bool
     var type: String = ""
 
+    var enPassantTarget : Bool // for pawns only
+
     
     init(_ color:String, position: Point = Point(x:-1, y:-1), hasMoved: Bool = false) {
         
         self.color = color
         self.position = position
         self.hasMoved = hasMoved
+        self.enPassantTarget = false
         
     }
 
