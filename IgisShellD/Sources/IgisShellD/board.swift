@@ -130,12 +130,15 @@ class Board {
         let piece = Board.pieceAt(from,boardstate:boardstate)
 
         if Board.pieceAt(Point(x:to.x,y:to.y),boardstate:boardstate) != nil {
-            // if a pieces point is -1,-1 its considered "dead"
+            // if a pieces point is -1,-1 its considered "dead"            
             Board.pieceAt(Point(x:to.x,y:to.y),boardstate:boardstate)!.position = Point(x:-1,y:-1)
         }
+        
         piece!.position = Point(x:to.x, y:to.y)
+        piece!.hasMoved = true
         boardstate[to.y][to.x] = piece
         boardstate[from.y][from.x] = nil
+        
         if  piece!.color == "w" {
             whosMove = "b"
         } else if piece!.color == "b" {

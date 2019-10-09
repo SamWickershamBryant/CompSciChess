@@ -2,9 +2,29 @@ import Igis
 import Foundation
 
 class Menu {
+    
+    let gameSize : Rect
+    
     init(){
+        gameSize = Rect(topLeft:Point(x:0, y:0), size:Size(width:50, height:50))
+        
     }
+    
+    func setGameSize(canvas:Canvas) -> Rect {
+        var updatedGameSize = gameSize
+        updatedGameSize.width = 0
+        updatedGameSize.height = 0
+        updatedGamesize = Rect()
+        
+        return updatedGameSize
+    }
+    
+    
 }
+
+
+
+
 /*
  when board is finished, the future plan is for menu to take controls and keep track of which players are playing...
  menu will also hold and display the game class (which containes board and timer in the future). Menu will start on some sort of home page
