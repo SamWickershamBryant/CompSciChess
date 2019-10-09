@@ -3,19 +3,29 @@ import Foundation
 
 class Menu {
     
-    let gameSize : Rect
+    let gameRect : Rect
     
     init(){
-        gameSize = Rect(topLeft:Point(x:0, y:0), size:Size(width:50, height:50))
+        gameRect = Rect(topLeft:Point(x:0, y:0), size:Size(width:50, height:50))
         
     }
     
     func setGameSize(canvas:Canvas) -> Rect {
-        var updatedGameSize = gameSize
-        updatedGameSize.width = 0
-        updatedGameSize.height = 0
-        updatedGamesize = Rect()
-        
+        var updatedGameSize = gameRect
+        if canvas.canvasSize != nil {
+
+            var updatedWidth = canvas.canvasSize!.width
+            while updatedWidth % 8 != 0 {
+                updatedWidth -= 1
+            }
+            
+            var updatedHeight = canvas.canvasSize!.height
+            while updatedHeight % 8 != 0 {
+                updatedHeight -= 1
+            }
+            
+            updatedGameSize.size = Size(width:updatedWidth, height:updatedHeight)
+        }
         return updatedGameSize
     }
     
