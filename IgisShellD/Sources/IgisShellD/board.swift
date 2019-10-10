@@ -127,6 +127,13 @@ class Board {
             print("Move to pos is out of bounds")
             return
         }
+        if enPassant.count > 0 {
+            for point in enPassant {
+                boardstate[point.y][point.x]!.enPassantTarget = false
+            }
+            enPassant = []
+        }
+        
         
         let piece = Board.pieceAt(from,boardstate:boardstate)
 
@@ -139,15 +146,39 @@ class Board {
             if abs(to.y - from.y) == 2 && abs(to.x - from.x) == 0 {
                 piece!.enPassantTarget = true
                 enPassant.append(to)
-            } else if piece!.color == "w" {
-           
-           
-                // deal with en passant
-           
-           
-           
-            } else if piece!.color == "b" {
-                // ditto
+            } else {
+                var adder = -1
+                if piece!.color == "b" {
+                    adder = 1
+                }
+                let upLeft = to.x - from.x == -1 && to.y - from.y == adder
+                let upRight = to.x - from.x == 1 && to.y - from.y == adder
+                if upLeft {
+                    if Board.pieceAt(to, boardstate:boardstate) == nil {
+                        let left = Point(x:to.x, y:from.y)
+                        if Board.pieceAt(left, boardstate:boardstate) != nil {
+                            if Board.pieceAt(left, boardstate:boardstate)!.enPassantTarget {
+                                boardstate[left.y][left.x]!.position = Point(x:-1,y:-1)
+                                boardstate[left.y][left.x] = nil
+                            }
+                        }
+                    } else {
+                        boardstate[to.y][to.x]!.position = Point(x:-1, y:-1)
+                    }
+                } 
+                else if upRight {
+                    if Board.pieceAt(to, boardstate:boardstate) == nil {
+                        let right = Point(x:to.x, y:from.y)
+                        if Board.pieceAt(right, boardstate:boardstate) != nil {
+                            if Board.pieceAt(right, boardstate:boardstate)!.enPassantTarget {
+                                boardstate[right.y][right.x]!.position = Point(x:-1,y:-1)
+                                boardstate[right.y][right.x] = nil
+                            }
+                        }
+                    } else {
+                        boardstate[to.y][to.x]!.position = Point(x:-1, y:-1)
+                    }
+                }
             }
         }
         
