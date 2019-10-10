@@ -14,7 +14,7 @@ class Painter : PainterBase {
     
     override func setup(canvas:Canvas) {
        
-       
+        game.setup(canvas:canvas)
        
         
        
@@ -40,7 +40,7 @@ class Painter : PainterBase {
     }
     
     override func render(canvas:Canvas) {
-        if game.needsToRender() {
+        if game.needsToRender() && game.isReady() {
             game.renderGame(canvas:canvas)
         }
     }

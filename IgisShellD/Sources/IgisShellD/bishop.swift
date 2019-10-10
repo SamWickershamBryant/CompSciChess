@@ -8,6 +8,9 @@ class Bishop : Piece {
     init(_ color:String) {
         super.init(color)
         self.type = "b"
+
+        self.imageLinkWhite = "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Chess_blt45.svg/50px-Chess_blt45.svg.png"
+        self.imageLinkBlack = "https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Chess_bdt45.svg/50px-Chess_bdt45.svg.png"
     }
 
     

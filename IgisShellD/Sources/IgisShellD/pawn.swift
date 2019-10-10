@@ -8,6 +8,9 @@ class Pawn : Piece {
     init(_ color:String) {
         super.init(color)
         self.type = "p"
+
+        self.imageLinkWhite = "https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Chess_plt45.svg/50px-Chess_plt45.svg.png"
+        self.imageLinkBlack = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Chess_pdt45.svg/50px-Chess_pdt45.svg.png"
         
     }
 

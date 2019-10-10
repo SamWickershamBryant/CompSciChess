@@ -46,15 +46,17 @@ class Board {
         self.kingInCheck = false
     }
  
-    func setPositions() {
+    func setPositions(canvas:Canvas) {
         for row in 0 ... 7 {
             for piece in 0 ... 7 {
                 let currentPiece = boardstate[row][piece]
                 if currentPiece != nil {
                     currentPiece!.position = Point(x:piece, y:row)
+                    currentPiece!.loadImage(canvas:canvas)
                 }
             }
         }
+        
     }
 
     
@@ -319,6 +321,39 @@ class Board {
                                                 y:topLeft.y + (legalMove.y * sideLength) + (sideLength / 2))
                     let pieceCircle = Ellipse(center:piecePosOnBoard, radiusX: sideLength / 4, radiusY: sideLength / 4, fillMode:.fill)
                     canvas.render(pieceCircle)
+                }
+            }
+        }
+        
+    }
+
+    func piecesReady() -> Bool {
+        for row in 0 ... 7 {
+            for piece in 0 ... 7 {
+                if boardstate[row][piece] != nil {
+                    if !boardstate[row][piece]!.imageReady() {
+                        return false
+                    }
+                }
+            }
+        }
+        return true
+    }
+    
+    func renderPiecesAsImage(canvas:Canvas) {
+        let sideLength = size / 8
+        for row in 0 ... 7 {
+            for piece in 0 ... 7 {
+                let boundingRect = Rect(topLeft:Point(x:topLeft.x + (piece * sideLength),
+                                                      y:topLeft.y + (row * sideLength)),
+                                        size:Size(width:sideLength, height:sideLength))
+                let pieceToDisplay = boardstate[row][piece]
+                if pieceToDisplay != nil {
+                    if pieceToDisplay!.imageReady() {
+                        boardstate[row][piece]!.displayImage(rect:boundingRect, canvas:canvas)
+                    } else {
+                        print("this piece not ready fam")
+                    }
                 }
             }
         }

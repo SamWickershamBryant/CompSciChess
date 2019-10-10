@@ -10,10 +10,18 @@ class Game {
 
     init() {
         board = Board(topLeft:Point(x:100, y:100), size: 800)
-        board.setPositions()
         choosing = false
         choosingPoint = Point(x:0, y:0)
         boardChanged = true
+    }
+
+    func setup(canvas:Canvas) {
+        board.setPositions(canvas:canvas)
+    }
+
+    func isReady() -> Bool {
+        print(board.piecesReady())
+        return board.piecesReady()
     }
 
     func needsToRender() -> Bool {
@@ -25,7 +33,7 @@ class Game {
         if choosing == true {
             board.renderMoves(of:choosingPoint, canvas:canvas)
         }
-        board.renderPiecesAsText(canvas:canvas)
+        board.renderPiecesAsImage(canvas:canvas)
         boardChanged = false
     }
 

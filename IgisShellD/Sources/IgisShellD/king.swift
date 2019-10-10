@@ -8,6 +8,9 @@ class King : Piece {
     init(_ color:String) {
         super.init(color)
         self.type = "k"
+
+        self.imageLinkWhite = "https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Chess_klt45.svg/50px-Chess_klt45.svg.png"
+        self.imageLinkBlack = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Chess_kdt45.svg/50px-Chess_kdt45.svg.png"
     }
     
     override func moveList(boardstate:[[Piece?]]) -> [Point] {
