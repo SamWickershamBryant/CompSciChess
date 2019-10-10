@@ -257,7 +257,23 @@ class Board {
         
     }
 
+    func legalMoves(of:Point) -> [Point] {
+        guard Board.inBounds(of) else {
+            print("not in bounds: \(of)")
+            return []
+        }
+        guard Board.pieceAt(of, boardstate:boardstate) != nil else {
+            print("piece does not exit at \(of)")
+            return []
+        }
+        return Board.pieceAt(of, boardstate:boardstate)!.legalMoves(boardstate:boardstate)
+    }
+
     func renderMoves(of:Point, canvas:Canvas) {
+        guard Board.inBounds(of) else {
+            print("not in bounds: \(of)")
+            return
+        }
         let piece = boardstate[of.y][of.x]
         if piece == nil {
             print("cant render moves of empty space!")
