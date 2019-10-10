@@ -20,7 +20,7 @@ class Knight : Piece {
 
     override func legalMoves(boardstate:[[Piece?]]) -> [Point] {
         // only have to check if the king gets put in danger because knight jumps high as a mf
-        return moveList()
+        return []
     }
 
 
