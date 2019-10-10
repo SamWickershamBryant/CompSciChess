@@ -3,33 +3,57 @@ import Foundation
 
 class Menu {
     
-    let gameRect : Rect
+    var gameRect : Rect
+    var mainRect : Rect //width will be >=65% of gameRect (until divisible by 8)
+                        //height will be <=canvasHeight (until divisible by 10))
+    var sideBarRect : Rect //width will be <=35% of gameRect (until mainRect divisible by 8)
+                           //height will be = mainRect
     
     init(){
         gameRect = Rect(topLeft:Point(x:0, y:0), size:Size(width:50, height:50))
-        
+        mainRect = Rect(topLeft:Point(x:10, y:0), size:Size(width:50, height:50))
+        sideBarRect = Rect(topLeft:Point(x:20, y:0), size:Size(width:50, height:50))
     }
     
-    func setGameSize(canvas:Canvas) -> Rect {
-        var updatedGameSize = gameRect
+    func setGameRect(canvas:Canvas) -> Rect {
+        let updatedMainRect = setMainRect(canvas:canvas)
+        let updatedSideBarRect = setSideBarRect(canvas:canvas)
+        let updatedGameRect = Rect(topLeft:Point(x:0, y:0),
+                                   size:Size(width:updatedMainRect.size.width + updatedSideBarRect.size.width,
+                                             height:updatedMainRect.size.height + updatedSideBarRect.size.height))
+        return updatedGameRect
+    }
+    
+    func setMainRect(canvas:Canvas) -> Rect {
+        var updatedMainRect = mainRect
         if canvas.canvasSize != nil {
-
-            var updatedWidth = canvas.canvasSize!.width
+            let canvasWidth = canvas.canvasSize!.width
+            let canvasHeight = canvas.canvasSize!.height
+            var updatedWidth = canvasWidth - ((canvasWidth * 65) / 100)
             while updatedWidth % 8 != 0 {
-                updatedWidth -= 1
+                updatedWidth += 1
             }
-            
-            var updatedHeight = canvas.canvasSize!.height
-            while updatedHeight % 8 != 0 {
+            var updatedHeight = canvasHeight - updatedWidth
+            while updatedHeight % 10 != 0 {
                 updatedHeight -= 1
             }
-            
-            updatedGameSize.size = Size(width:updatedWidth, height:updatedHeight)
+            updatedMainRect = Rect(topLeft:Point(x:0, y:0),
+                                   size:Size(width:updatedWidth, height:updatedHeight))
         }
-        return updatedGameSize
+        return updatedMainRect
     }
-    
-    
+
+    func setSideBarRect(canvas:Canvas) -> Rect {
+        var updatedSideBarRect = mainRect
+        if canvas.canvasSize != nil {
+            let updatedWidth = gameRect.size.width - mainRect.size.width
+            let updatedHeight = mainRect.size.height
+            updatedSideBarRect = Rect(topLeft:Point(x:mainRect.topLeft.x + mainRect.size.width, y:mainRect.topLeft.y),
+                                      size:Size(width:updatedWidth,
+                                                height:updatedHeight))
+        }
+        return updatedSideBarRect
+    }
 }
 
 
