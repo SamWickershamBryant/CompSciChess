@@ -32,7 +32,7 @@ class Board {
     
           
     init(topLeft:Point, size:Int, boardstate:[[Piece?]] = Board.defaultBoardstate, whosMove : String = "w",
-         outLineColor:Color = Color(.black), inLineColor:Color = Color(.black), squareColor:[Color] = [Color(.gray), Color(.royalblue)],
+         outLineColor:Color = Color(.black), inLineColor:Color = Color(.black), squareColor:[Color] = [Color(red:201, green:172, blue:113), Color(red:115, green:92, blue:46)],
          lineWidth:Int = 2){
         self.topLeft = topLeft
         self.size = size // input not sanitized... yet (MUST be divisible by 8)
@@ -305,9 +305,11 @@ class Board {
             let thisPiecePosOnBoard = Point(x:topLeft.x + (of.x * sideLength) + (sideLength / 2),
                                           y:topLeft.y + (of.y * sideLength) + (sideLength / 2))
             let thisPieceCircle = Ellipse(center: thisPiecePosOnBoard, radiusX: sideLength  / 4, radiusY: sideLength / 4, fillMode:.fill)
-            let moveColor = Color(.brown)
-            canvas.render(FillStyle(color:moveColor))
+            let moveColor = Color(.cornsilk)
+            let thisColor = Color(.darkolivegreen)
+            canvas.render(FillStyle(color:thisColor))
             canvas.render(thisPieceCircle)
+            canvas.render(FillStyle(color:moveColor))
             let legalMoves = piece!.legalMoves(boardstate:boardstate)
             if legalMoves.count == 0 {
                 print("no legal moves!")
@@ -407,7 +409,7 @@ class Board {
         //render outLines:
         let outStrokeStyle = StrokeStyle(color:outLineColor)
         canvas.render(outStrokeStyle)
-        canvas.render(LineWidth(width:lineWidth))
+        canvas.render(LineWidth(width:lineWidth * 2))
 
         let outRect = Rect(topLeft:topLeft, size:Size(width:size, height:size))
         let outRectangle = Rectangle(rect:outRect, fillMode: .stroke)
