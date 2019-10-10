@@ -2,9 +2,10 @@ import Igis
 
 class Painter : PainterBase {
     
-    
+    let game : Game
     
     required init() {
+        game = Game()
     }
 
     override func framesPerSecond() -> Int {
@@ -12,19 +13,19 @@ class Painter : PainterBase {
     }
     
     override func setup(canvas:Canvas) {
-        let newBoard = Board(topLeft:Point(x:100,y:100), size:512, boardstate: Board.defaultBoardstate)
-        //      print(newBoard.boardstate)
-        newBoard.setPositions()
-        newBoard.renderBoard(canvas:canvas)
-       // newBoard.renderMoves(of:Point(x:4,y:3), canvas:canvas)
-        newBoard.renderMoves(of:Point(x:3,y:3), canvas:canvas)
-       // newBoard.renderMoves(of:Point(x:2,y:4), canvas:canvas)
+       
+       
+       
         
-        newBoard.renderPiecesAsText(canvas:canvas)
-        newBoard.debug()
+       
+       
+       
+        
+       
+       
 
        
-        print("nice")
+       
        
        
        
@@ -39,7 +40,9 @@ class Painter : PainterBase {
     }
     
     override func render(canvas:Canvas) {
-
+        if game.needsToRender() {
+            game.renderGame(canvas:canvas)
+        }
     }
 
     override func calculate(canvasId:Int, canvasSize:Size?) {
@@ -47,7 +50,7 @@ class Painter : PainterBase {
     }
 
     override func onClick(location:Point) {
-
+        game.onClick(point:location)
     }
 
     override func onMouseMove(location:Point) {
