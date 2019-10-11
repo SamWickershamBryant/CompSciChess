@@ -13,7 +13,28 @@ class Piece : CustomStringConvertible {
 
     var enPassantTarget : Bool // for pawns only
 
-    var image : Image?
+    static var image : [String : Image?] = ["p":nil,
+                                            "r":nil,
+                                            "n":nil,
+                                            "b":nil,
+                                            "k":nil,
+                                            "q":nil,
+                                            "P":nil,
+                                            "R":nil,
+                                            "N":nil,
+                                            "B":nil,
+                                            "K":nil,
+                                            "Q":nil
+    ]
+
+    func fenType() -> String {
+        if self.color == "b" {
+            return type.uppercased()
+        } else {
+            return type
+        }
+    }
+             
     
     init(_ color:String, position: Point = Point(x:-1, y:-1), hasMoved: Bool = false) {
         
@@ -26,16 +47,16 @@ class Piece : CustomStringConvertible {
 
     func displayImage(rect:Rect, canvas:Canvas) {
         if imageReady() {
-            image!.renderMode = .destinationRect(rect)
-            canvas.render(image!)
+            Piece.image[fenType()]!!.renderMode = .destinationRect(rect)
+            canvas.render(Piece.image[fenType()]!!)
         } else {
             print("the image is not ready yet")
         }
     }
 
     func imageReady() -> Bool {
-        if image != nil {
-            return image!.isReady
+        if Piece.image[fenType()]! != nil {
+            return Piece.image[fenType()]!!.isReady
         } else {
             print("please load the image retard")
             return false
@@ -43,10 +64,12 @@ class Piece : CustomStringConvertible {
     }
 
     func loadImage(canvas:Canvas) {
-        if self.image == nil {
-            self.image = imageDisplay()
+        if Piece.image[fenType()]! == nil {
+            Piece.image[fenType()]! = (imageDisplay()) as Image?
+            canvas.setup(Piece.image[fenType()]!!)
+            print("load image \(fenType()) <-")
         }
-        canvas.setup(self.image!)
+        
     }
 
     func imageDisplay() -> Image {
