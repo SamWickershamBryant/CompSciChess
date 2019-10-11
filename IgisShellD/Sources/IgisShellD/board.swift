@@ -454,9 +454,40 @@ class Board {
         
     }
 
-    
-
-    
-    
+    func inCheck(color:String) -> Bool { // color: "w" or "b"
+        var friendlyKing : Piece
+        for row in 0...7{
+            for piece in 0...7{
+                if boardstate[row][piece] != nil{
+                    if boardstate[row][piece]!.color == color && boardstate[row][piece]!.type == "K"{
+                         friendlyKing = boardstate[row][piece]!
+                    }
+                }
+            }
+        }
+        var inCheck = false
+        for row in 0 ... 7 {
+            for piece in 0 ... 7 {
+                
+                if boardstate[row][piece] != nil{
+                    if boardstate[row][piece]!.color == "w"{
+                        for i in boardstate[row][piece]!.moveList(boardstate:boardstate){
+                            
+                            if Board.pieceAt(i, boardstate:boardstate)!.type == friendlyKing.type && Board.pieceAt(i, boardstate:boardstate)!.color == friendlyKing.color{
+                                inCheck = false
+                            }
+                        }
+                        
+                    // <- gives OPTIONAL piece, nil = empty space.
+                // check if color is opposite, then if .moveList() (-> [Point]) hits frienly king
+                // Board.pieceAt(point, boardstate:boardstate) -> optional piece <- check if it is friendly king, if so return true, if not then false
+                    }
+                }
+            }
+            
+        }
+        return inCheck
+    }
+   
 
 }
