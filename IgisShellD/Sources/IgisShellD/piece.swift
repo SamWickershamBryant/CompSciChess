@@ -177,7 +177,137 @@ class Piece : CustomStringConvertible {
         return unfilteredLegalMoves
         
     }
+    func parseKingMoves(boardstate:[[Piece?]]) -> [Point] {
+        var unfilteredLegalMoves = [Point]()
+        let kingPiece = Board.pieceAt(Board.findPiece(self.color,"k",boardstate:boardstate)[0],boardstate:boardstate)        
 
+
+        
+        // King moves around
+        //tm        
+        unfilteredLegalMoves.append(Point(x:kingPiece!.position.x,y:kingPiece!.position.y-1))
+        //tl
+        unfilteredLegalMoves.append(Point(x:kingPiece!.position.x-1,y:kingPiece!.position.y-1))
+        //tr
+        unfilteredLegalMoves.append(Point(x:kingPiece!.position.x+1,y:kingPiece!.position.y-1))
+
+        //ml
+        unfilteredLegalMoves.append(Point(x:kingPiece!.position.x-1,y:kingPiece!.position.y))
+        //mr
+        unfilteredLegalMoves.append(Point(x:kingPiece!.position.x+1,y:kingPiece!.position.y)) 
+
+        //mb
+        unfilteredLegalMoves.append(Point(x:kingPiece!.position.x,y:kingPiece!.position.y+1))
+        //bl
+        unfilteredLegalMoves.append(Point(x:kingPiece!.position.x-1,y:kingPiece!.position.y+1))
+        //br
+        unfilteredLegalMoves.append(Point(x:kingPiece!.position.x+1,y:kingPiece!.position.y+1))
+
+        var finalUnfilteredLegalMoves : [Point] = []
+        
+        for move in unfilteredLegalMoves {
+            if Board.inBounds(move) == true {            
+                if Board.pieceAt(move, boardstate:boardstate) == nil {
+                    finalUnfilteredLegalMoves.append(move)
+                } else {
+                    if Board.pieceAt(move, boardstate:boardstate)!.color != self.color {
+                        finalUnfilteredLegalMoves.append(move)
+                    }
+                }
+            }
+        }
+
+        
+        // Castle rights --------------------------------------------------
+        var count = 0        
+        if kingPiece!.hasMoved == false {
+            // white castle
+            if self.color == "w" {
+
+                // left side castle
+                for i in 1..<4 {
+                    if boardstate[kingPiece!.position.y][kingPiece!.position.x-i] == nil {
+                        count += 1
+                    } else {
+                        break
+                    }
+                }
+                // if there are no obstructing pieces
+                print(count)
+                if count == 3  {
+                    // if rook has moved
+                    if boardstate[kingPiece!.position.y][kingPiece!.position.x-4]!.type == "r" {
+                        if boardstate[kingPiece!.position.y][kingPiece!.position.x-4]!.hasMoved == false {
+                            
+                            finalUnfilteredLegalMoves.append(Point(x:kingPiece!.position.x-2,y:kingPiece!.position.y))
+                        }
+                    }
+                }
+                // end of left white castle
+
+                // right side castle
+                for i in 1..<3 {
+                    if boardstate[kingPiece!.position.y][kingPiece!.position.x+i] == nil {
+                        count += 1
+                    } else {
+                        break
+                    }
+                }
+                // if there are no obstructing pieces
+                if count == 2  {
+                    // if rook has moved
+                    if boardstate[kingPiece!.position.y][kingPiece!.position.x+3]!.type == "r" {
+                        // if rook has not moved
+                        if boardstate[kingPiece!.position.y][kingPiece!.position.x+3]!.hasMoved == false {
+                            finalUnfilteredLegalMoves.append(Point(x:kingPiece!.position.x+2,y:kingPiece!.position.y))
+                        }
+                    }
+                }            
+                // end of right white castle
+
+            // Black Castle
+            } else if self.color == "b" {
+
+                // left side black castle
+                for i in 1..<4 {
+                    if boardstate[kingPiece!.position.y][kingPiece!.position.x-i] == nil {
+                        count += 1
+                    } else {
+                        break
+                    }
+                }
+                if count == 3  {
+                    if boardstate[kingPiece!.position.y][kingPiece!.position.x-4]!.type == "r" { 
+                        if boardstate[kingPiece!.position.y][kingPiece!.position.x-4]!.hasMoved == false {
+                            finalUnfilteredLegalMoves.append(Point(x:kingPiece!.position.x-2,y:kingPiece!.position.y))
+                        }
+                    }
+                }
+                // end of left side castle
+                
+                // right side black castle
+                for i in 1..<3 {
+                    if boardstate[kingPiece!.position.y][kingPiece!.position.x+i] == nil {
+                        count += 1
+                    } else {
+                        break
+                    }
+                }
+                if count == 2 {
+                    if boardstate[kingPiece!.position.y][kingPiece!.position.x+3]!.type == "r" {
+                        if boardstate[kingPiece!.position.y][kingPiece!.position.x+3]!.hasMoved == false {
+                            finalUnfilteredLegalMoves.append(Point(x:kingPiece!.position.x+2,y:kingPiece!.position.y))
+                        }
+                    }
+                }
+                // end of right black castle
+            }    
+        }
+        // End of Castle Rights ------------------------------------------------------------------------------------
+        
+        return finalUnfilteredLegalMoves        
+    }
+    
     func parseRookMoves(boardstate:[[Piece?]]) -> [Point] {
         var unfilteredLegalMoves = [Point]()
 
