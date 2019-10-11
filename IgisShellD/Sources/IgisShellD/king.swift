@@ -1,9 +1,6 @@
 import Igis
 
 class King : Piece {
-
-
-
     
     init(_ color:String) {
         super.init(color)
@@ -14,11 +11,11 @@ class King : Piece {
     }
     
     override func moveList(boardstate:[[Piece?]]) -> [Point] {
-        return []
+        return parseKingMoves(boardstate:boardstate)
     }
 
     override func legalMoves(boardstate:[[Piece?]]) -> [Point] {
-        return []
+        return moveList(boardstate:boardstate).filter({!Board.moveLeavesKingInDanger(from:self.position, to:$0, boardstate:boardstate)})
     }
 
 
