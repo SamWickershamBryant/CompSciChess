@@ -209,7 +209,9 @@ class Board {
         boardstate[to.y][to.x] = piece
         boardstate[from.y][from.x] = nil
         print("made it!")
+       
         if  piece!.color == "w" {
+            print("black in check: \(inCheck(color:"b"))")
             whosMove = "b"
         } else if piece!.color == "b" {
             whosMove = "w"
@@ -455,7 +457,7 @@ class Board {
     }
 
     func inCheck(color:String) -> Bool { // color: "w" or "b"
-        var friendlyKing : Piece
+        var friendlyKing = Piece("b")
         for row in 0...7{
             for piece in 0...7{
                 if boardstate[row][piece] != nil{
@@ -471,10 +473,10 @@ class Board {
                 
                 if boardstate[row][piece] != nil{
                     if boardstate[row][piece]!.color == "w"{
-                        for i in boardstate[row][piece]!.moveList(boardstate:boardstate){
+                        for point in boardstate[row][piece]!.moveList(boardstate:boardstate){
                             
-                            if Board.pieceAt(i, boardstate:boardstate)!.type == friendlyKing.type && Board.pieceAt(i, boardstate:boardstate)!.color == friendlyKing.color{
-                                inCheck = false
+                            if (Board.pieceAt(point, boardstate:boardstate)!.type == friendlyKing.type) && (Board.pieceAt(point, boardstate:boardstate)!.color == friendlyKing.color){
+                                inCheck = true
                             }
                         }
                         
