@@ -13,7 +13,7 @@ class Board {
     var whosMove : String
     var kingInCheck : Bool
 
-    static let defaultBoardstate = [[Rook("b"), Knight("b"), Bishop("b"), Queen("b"), King("b"), Bishop("b"), Knight("b"), Rook("b")],
+    static func defaultBoardstate() -> [[Piece?]]{return [[Rook("b"), Knight("b"), Bishop("b"), Queen("b"), King("b"), Bishop("b"), Knight("b"), Rook("b")],
                                     [Pawn("b"),Pawn("b"),Pawn("b"),Pawn("b"),Pawn("b"),Pawn("b"),Pawn("b"),Pawn("b")],
                                     [nil, nil, nil, nil, nil, nil, nil, nil],
                                     [nil, nil, nil, nil, nil, nil, nil, nil],
@@ -22,7 +22,7 @@ class Board {
                                     [Pawn("w"),Pawn("w"),Pawn("w"),Pawn("w"),Pawn("w"),Pawn("w"),Pawn("w"),Pawn("w")],
                                     [Rook("w"), Knight("w"), Bishop("w"), Queen("w"), King("w"), Bishop("w"), Knight("w"), Rook("w")],
 
-    ]
+                                                  ]}
 
     func debug() {
         print("true:\(Board.moveLeavesKingInDanger(from:Point(x:4,y:3), to:Point(x:4,y:2), boardstate:boardstate))")
@@ -31,7 +31,7 @@ class Board {
     }
     
           
-    init(topLeft:Point, size:Int, boardstate:[[Piece?]] = Board.defaultBoardstate, whosMove : String = "w",
+    init(topLeft:Point, size:Int, boardstate:[[Piece?]] = Board.defaultBoardstate(), whosMove : String = "w",
          outLineColor:Color = Color(.black), inLineColor:Color = Color(.black), squareColor:[Color] = [Color(red:201, green:172, blue:113), Color(red:115, green:92, blue:46)],
          lineWidth:Int = 2){
         self.topLeft = topLeft
@@ -52,7 +52,7 @@ class Board {
                 let currentPiece = boardstate[row][piece]
                 if currentPiece != nil {
                     currentPiece!.position = Point(x:piece, y:row)
-                    currentPiece!.loadImage(canvas:canvas)
+                    
                 }
             }
         }
@@ -211,7 +211,7 @@ class Board {
         print("made it!")
        
         if  piece!.color == "w" {
-            print("black in check: \(inCheck(color:"b"))")
+            //print("black in check: \(inCheck(color:"b"))")
             whosMove = "b"
         } else if piece!.color == "b" {
             whosMove = "w"
@@ -329,20 +329,11 @@ class Board {
         
     }
 
-    func piecesReady() -> Bool {
-        for row in 0 ... 7 {
-            for piece in 0 ... 7 {
-                if boardstate[row][piece] != nil {
-                    if !boardstate[row][piece]!.imageReady() {
-                        return false
-                    }
-                }
-            }
-        }
-        return true
+    func piecesReady(imageLibrary:ImageLibrary) -> Bool {
+        return imageLibrary.imagesReady()
     }
     
-    func renderPiecesAsImage(canvas:Canvas) {
+    func renderPiecesAsImage(imageLibrary:ImageLibrary, canvas:Canvas) {
         let sideLength = size / 8
         for row in 0 ... 7 {
             for piece in 0 ... 7 {
@@ -351,8 +342,9 @@ class Board {
                                         size:Size(width:sideLength, height:sideLength))
                 let pieceToDisplay = boardstate[row][piece]
                 if pieceToDisplay != nil {
-                    if pieceToDisplay!.imageReady() {
-                        boardstate[row][piece]!.displayImage(rect:boundingRect, canvas:canvas)
+                    if imageLibrary.imageReady(pieceToDisplay!) {
+                        imageLibrary.displayImage(piece:boardstate[row][piece]!, rect:boundingRect,
+                                                  canvas:canvas)
                     } else {
                         print("this piece not ready fam")
                     }

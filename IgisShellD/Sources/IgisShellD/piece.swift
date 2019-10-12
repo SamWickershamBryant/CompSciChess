@@ -13,20 +13,6 @@ class Piece : CustomStringConvertible {
 
     var enPassantTarget : Bool // for pawns only
 
-    static var image : [String : Image?] = ["p":nil,
-                                            "r":nil,
-                                            "n":nil,
-                                            "b":nil,
-                                            "k":nil,
-                                            "q":nil,
-                                            "P":nil,
-                                            "R":nil,
-                                            "N":nil,
-                                            "B":nil,
-                                            "K":nil,
-                                            "Q":nil
-    ]
-
     func fenType() -> String {
         if self.color == "b" {
             return type.uppercased()
@@ -42,53 +28,6 @@ class Piece : CustomStringConvertible {
         self.position = position
         self.hasMoved = hasMoved
         self.enPassantTarget = false
-        
-    }
-
-    func displayImage(rect:Rect, canvas:Canvas) {
-        if imageReady() {
-            Piece.image[fenType()]!!.renderMode = .destinationRect(rect)
-            canvas.render(Piece.image[fenType()]!!)
-        } else {
-            print("the image is not ready yet")
-        }
-    }
-
-    func imageReady() -> Bool {
-        if Piece.image[fenType()]! != nil {
-            return Piece.image[fenType()]!!.isReady
-        } else {
-            print("please load the image retard")
-            return false
-        }
-    }
-
-    func loadImage(canvas:Canvas) {
-        if Piece.image[fenType()]! == nil {
-            Piece.image[fenType()]! = (imageDisplay()) as Image?
-            canvas.setup(Piece.image[fenType()]!!)
-            print("load image \(fenType()) <-")
-        }
-        
-    }
-
-    func imageDisplay() -> Image {
-        if self.color == "b" {
-            guard let url =
-                    URL(string:imageLinkBlack) else {
-                fatalError("failed to create URL for \(self.type) \(self.color)")
-            }
-            return Image(sourceURL:url)
-        }else {
-            guard let url =
-                    URL(string:imageLinkWhite)
-            
-            else {
-                fatalError("failed to create URL for \(self.type) \(self.color)")
-            }
-
-            return Image(sourceURL:url)
-        }
         
     }
 

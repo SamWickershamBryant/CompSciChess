@@ -1,11 +1,17 @@
 import Igis
 
 class Painter : PainterBase {
-    
+    let library : ImageLibrary
     let game : Game
     
     required init() {
+        library = ImageLibrary()
+
+            
+        
+        
         game = Game()
+        print("Init ran")
     }
 
     override func framesPerSecond() -> Int {
@@ -13,9 +19,9 @@ class Painter : PainterBase {
     }
     
     override func setup(canvas:Canvas) {
-       
+        library.loadImages(canvas:canvas)
         game.setup(canvas:canvas)
-       
+        print("game setup")
         
        
        
@@ -40,8 +46,8 @@ class Painter : PainterBase {
     }
     
     override func render(canvas:Canvas) {
-        if game.needsToRender() && game.isReady() {
-            game.renderGame(canvas:canvas)
+        if game.needsToRender() && game.isReady(imageLibrary:library) {
+            game.renderGame(imageLibrary:library, canvas:canvas)
         }
     }
 

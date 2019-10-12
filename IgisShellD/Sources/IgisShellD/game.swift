@@ -19,21 +19,21 @@ class Game {
         board.setPositions(canvas:canvas)
     }
 
-    func isReady() -> Bool {
-        print(board.piecesReady())
-        return board.piecesReady()
+    func isReady(imageLibrary:ImageLibrary) -> Bool {
+        print(board.piecesReady(imageLibrary:imageLibrary))
+        return board.piecesReady(imageLibrary:imageLibrary)
     }
 
     func needsToRender() -> Bool {
         return boardChanged
     }
 
-    func renderGame(canvas:Canvas) {
+    func renderGame(imageLibrary:ImageLibrary, canvas:Canvas) {
         board.renderBoard(canvas:canvas)
         if choosing == true {
             board.renderMoves(of:choosingPoint, canvas:canvas)
         }
-        board.renderPiecesAsImage(canvas:canvas)
+        board.renderPiecesAsImage(imageLibrary:imageLibrary, canvas:canvas)
         boardChanged = false
     }
 
