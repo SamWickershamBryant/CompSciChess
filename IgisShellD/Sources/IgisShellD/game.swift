@@ -6,17 +6,33 @@ class Game {
     let board : Board
     var choosing : Bool
     var choosingPoint : Point
-    var boardChanged : Bool
+    
 
-    init() {
+    var gameState : Int
+                                
+
+    let users: [Int]
+
+    
+
+    init(users:[Int]) {
         board = Board(topLeft:Point(x:100, y:100), size: 800)
         choosing = false
         choosingPoint = Point(x:0, y:0)
-        boardChanged = true
+
+        gameState = 0
+        self.users = users
     }
 
-    func setup(canvas:Canvas) {
-        board.setPositions(canvas:canvas)
+    func boardChanged() {
+        gameState += 1
+    }
+
+    
+
+    func setup() {
+        board.setPositions()
+        boardChanged()
     }
 
     func isReady(imageLibrary:ImageLibrary) -> Bool {
@@ -24,9 +40,6 @@ class Game {
         return board.piecesReady(imageLibrary:imageLibrary)
     }
 
-    func needsToRender() -> Bool {
-        return boardChanged
-    }
 
     func renderGame(imageLibrary:ImageLibrary, canvas:Canvas) {
         board.renderBoard(canvas:canvas)
@@ -34,7 +47,7 @@ class Game {
             board.renderMoves(of:choosingPoint, canvas:canvas)
         }
         board.renderPiecesAsImage(imageLibrary:imageLibrary, canvas:canvas)
-        boardChanged = false
+
     }
 
     func clickPosition(point:Point) -> Point {
@@ -51,10 +64,14 @@ class Game {
           (point.y < (board.topLeft.y + board.size))
     }
 
-    func onClick(point:Point) {
+    func onClick(point:Point, userId:Int) {
+        guard users.contains(userId) else {
+            print("you aint a user cuh")
+            return
+        }
         guard clickOnBoard(point:point) else {
             choosing = false
-            boardChanged = true
+            boardChanged()
             return
         }
         let pos = clickPosition(point:point)
@@ -65,21 +82,21 @@ class Game {
         if choosing == false {
             if Board.pieceAt(pos, boardstate:board.boardstate) == nil {
                 choosing = false
-                boardChanged = true
+                boardChanged()
             } else {
                 choosing = true
                 choosingPoint = pos
-                boardChanged = true
+                boardChanged()
             }
         } else {
             let legalMoves = board.legalMoves(of:choosingPoint)
             if legalMoves.contains(where:{$0.x == pos.x && $0.y == pos.y}) {
                 board.movePiece(from:choosingPoint, to:pos)
                 choosing = false
-                boardChanged = true
+                boardChanged()
             } else {
                 choosing = false
-                boardChanged = true
+                boardChanged()
             }
         }
         

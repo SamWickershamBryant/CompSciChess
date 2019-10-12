@@ -2,15 +2,25 @@ import Igis
 
 class Painter : PainterBase {
     let library : ImageLibrary
-    let game : Game
+    static let game : Game = Game(users:[0,1])
+
+    static var nextUser = 0
+
+    var user : Int
+
+    var menu : Menu
     
     required init() {
         library = ImageLibrary()
+        Painter.game.setup()
+        user = Painter.nextUser
+        Painter.nextUser += 1
 
+        print("user no \(user)")
             
-        
-        
-        game = Game()
+        menu = Menu(userId:user)
+        menu.joinGame(game:Painter.game)
+        //game = Game()
         print("Init ran")
     }
 
@@ -20,8 +30,8 @@ class Painter : PainterBase {
     
     override func setup(canvas:Canvas) {
         library.loadImages(canvas:canvas)
-        game.setup(canvas:canvas)
-        print("game setup")
+        
+        //print("game setup")
         
        
        
@@ -46,9 +56,7 @@ class Painter : PainterBase {
     }
     
     override func render(canvas:Canvas) {
-        if game.needsToRender() && game.isReady(imageLibrary:library) {
-            game.renderGame(imageLibrary:library, canvas:canvas)
-        }
+        menu.update(imageLibrary:library, canvas:canvas)
     }
 
     override func calculate(canvasId:Int, canvasSize:Size?) {
@@ -56,7 +64,7 @@ class Painter : PainterBase {
     }
 
     override func onClick(location:Point) {
-        game.onClick(point:location)
+        menu.onClick(point:location)
     }
 
     override func onMouseMove(location:Point) {

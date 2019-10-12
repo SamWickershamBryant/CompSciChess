@@ -7,12 +7,53 @@ class Menu {
     var mainRect : Rect //width will be >=65% of gameRect (until divisible by 8)
                         //height will be <=canvasHeight (until divisible by 10))
     var sideBarRect : Rect //width will be <=35% of gameRect (until mainRect divisible by 8)
-                           //height will be = mainRect
+    //height will be = mainRect
+
+    var game : Game? = nil
+    var lastRenderedState = -1
+    let userId : Int 
     
-    init(){
+    init(userId:Int){
         gameRect = Rect(topLeft:Point(x:0, y:0), size:Size(width:50, height:50))
         mainRect = Rect(topLeft:Point(x:10, y:0), size:Size(width:50, height:50))
         sideBarRect = Rect(topLeft:Point(x:20, y:0), size:Size(width:50, height:50))
+
+        self.userId = userId
+    }
+
+    func onClick(point:Point) {
+        if game != nil {
+            game!.onClick(point:point, userId:userId)
+        }
+    }
+
+    func joinGame(game:Game) {
+        self.game = game
+    }
+
+    func update(imageLibrary:ImageLibrary, canvas:Canvas) {
+        if gameNeedsToRender() {
+            renderGame(imageLibrary:imageLibrary, canvas:canvas)
+        }
+    }
+
+    func gameNeedsToRender() -> Bool {
+        guard game != nil else {
+            print("join a game first")
+            return false
+        }
+        return game!.gameState != lastRenderedState
+    }
+
+    func renderGame(imageLibrary:ImageLibrary, canvas:Canvas) {
+        guard game != nil else {
+            print("join a game first")
+            return
+        }
+        if game!.isReady(imageLibrary:imageLibrary) {
+            game!.renderGame(imageLibrary:imageLibrary, canvas:canvas)
+            lastRenderedState = game!.gameState
+        }
     }
     
     func setGameRect(canvas:Canvas) -> Rect {
@@ -20,7 +61,7 @@ class Menu {
         let updatedSideBarRect = setSideBarRect(canvas:canvas)
         let updatedGameRect = Rect(topLeft:Point(x:0, y:0),
                                    size:Size(width:updatedMainRect.size.width + updatedSideBarRect.size.width,
-                                             height:updatedMainRect.size.height + updatedSideBarRect.size.height))
+                                             height:updatedMainRect.size.height))
         return updatedGameRect
     }
     

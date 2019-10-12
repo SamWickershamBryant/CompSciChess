@@ -46,7 +46,7 @@ class Board {
         self.kingInCheck = false
     }
  
-    func setPositions(canvas:Canvas) {
+    func setPositions() {
         for row in 0 ... 7 {
             for piece in 0 ... 7 {
                 let currentPiece = boardstate[row][piece]
@@ -381,7 +381,7 @@ class Board {
 
     func renderBoard(canvas:Canvas) {
         //render squares, then inlines, then outlines in that order
-        
+        print("finna render the board")
          let sideLength = size / 8 // side length of a single square
 
          //render squares:
