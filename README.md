@@ -1,16 +1,33 @@
-# CompSciChess #
-### Oog Lana Coders ###
+### CompSciChess ###
+# Oog Lana Coders #
 * Sam
   * Coder
+  * Developer
+  * *Security Team Lead*
+  * HR Lead
+  * Lead Graphics Developer
+  * IT Specialist
+  * Senior Developer
+  * Source Control Specialist
+  * Github Developer
 * Colin
   * Coder
   * Current chaess master
-* Yugi Sosa Rocha
-  * Coder
+  * Secretary
+  * Spaghetti code specialist
+* Yugi Alan Sosa Rocha
+  * ~~Coder~~
+  * Janitor
+* Nick 
+  * epic coder
+  * Senior design lead
+  * Algorithm development lead
+  * CEO of chess
+ 
+ # Concept #
+  This is a **mulitplayer chess game** which will use Igis as a platform to play. We plan on including multiple concurrent chess games, an okay UI, a leaderboard, a terrible AI, and many more. However, we want to *focus on making the game run as **smooth** as possible* rather than trying to add too many features. Since we plan on playing our game a lot (more or less play testing) this seems like a **reasonable goal** we can achieve.
   
-  
-  Images hahah : 
-  
+# Images # 
   ![White King](https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Chess_klt45.svg/50px-Chess_klt45.svg.png) 
   ![White Queen](https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Chess_qlt45.svg/50px-Chess_qlt45.svg.png) 
   ![White Rook](https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Chess_rlt45.svg/50px-Chess_rlt45.svg.png) 
