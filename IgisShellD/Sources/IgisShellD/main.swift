@@ -31,6 +31,7 @@ class Painter : PainterBase {
     override func setup(canvas:Canvas) {
         library.loadImages(canvas:canvas)
         
+        
         //print("game setup")
         
        
@@ -57,6 +58,7 @@ class Painter : PainterBase {
     
     override func render(canvas:Canvas) {
         menu.update(imageLibrary:library, canvas:canvas)
+       
     }
 
     override func calculate(canvasId:Int, canvasSize:Size?) {
