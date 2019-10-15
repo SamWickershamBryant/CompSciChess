@@ -30,7 +30,38 @@ class Board {
         print("true:\(Board.moveLeavesKingInDanger(from:Point(x:5,y:3), to:Point(x:5,y:5), boardstate:boardstate))")
     }
 
-    
+    func dupePiece(_ piece:Piece?) -> Piece? {
+        guard piece != nil else {
+            return nil
+        }
+        let c = piece!.color
+
+        switch piece!.type {
+        case "p": return Pawn(c)
+        case "r": return Rook(c)
+        case "n": return Knight(c)
+        case "b": return Bishop(c)
+        case "q": return Queen(c)
+        case "k": return King(c)
+        default: return Pawn(c)
+        }
+    }
+
+    func dupeBoardstate(boardstate:[[Piece?]]) -> [[Piece?]] {
+        var dupedBoardstate : [[Piece?]] = [[]]
+        var dupedRow : [Piece?] = []
+        for row in 0 ... 7 {
+            
+            for piece in 0 ... 7 {
+                let dupedPiece = dupePiece(Board.pieceAt(Point(x:piece, y:row), boardstate:boardstate))
+                dupedRow.append(dupedPiece)
+                
+            }
+            dupedBoardstate.append(dupedRow)
+            dupedRow = []
+        }
+        return dupedBoardstate
+    }
     
           
     init(boardstate:[[Piece?]] = Board.defaultBoardstate(), whosMove : String = "w"){
@@ -220,7 +251,9 @@ class Board {
     // moveBoard moves the entire board to a position (topleft = destination)
     
 
-    
+    /*static func moveLeavesKingInDanger2(from:Point, to:Point, boardstate:[[Piece?]]) -> Bool {
+        
+    }*/
     
 
     static func moveLeavesKingInDanger(from:Point, to:Point, boardstate:[[Piece?]]) -> Bool {

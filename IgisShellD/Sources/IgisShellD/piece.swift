@@ -118,6 +118,7 @@ class Piece : CustomStringConvertible {
     }
     func parseKingMoves(boardstate:[[Piece?]]) -> [Point] {
         var unfilteredLegalMoves = [Point]()
+
         let kingPiece = Board.pieceAt(Board.findPiece(self.color,"k",boardstate:boardstate)[0],boardstate:boardstate)        
 
 
@@ -245,6 +246,11 @@ class Piece : CustomStringConvertible {
         // End of Castle Rights ------------------------------------------------------------------------------------
         
         return finalUnfilteredLegalMoves        
+    }
+
+    func parseKingCastleMoves(boardstate:[[Piece?]]) -> [Point] {
+        return []
+        // yugi split these hoes up, its causing errors with the board
     }
     
     func parseRookMoves(boardstate:[[Piece?]]) -> [Point] {
