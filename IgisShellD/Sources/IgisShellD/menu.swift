@@ -9,6 +9,8 @@ class Menu {
     var sideBarRect : Rect //width will be <=35% of gameRect (until mainRect divisible by 8)
     //height will be = mainRect
 
+    var boardSettings : BoardSettings
+
     var game : Game? = nil
     var lastRenderedState = -1
     let userId : Int
@@ -22,11 +24,20 @@ class Menu {
 
         self.userId = userId
         self.canvasSize = Size(width: 10000, height: 8000)
+        self.boardSettings = BoardSettings(topLeft:Point(x:100,y:100),
+                                           size:800,
+                                           outLineColor:Color(.black),
+                                           inLineColor:Color(.black),
+                                           squareColor:[Color(red:201, green:172, blue:113), Color(red:115, green:92, blue:46)],
+                                           lineWidth:2)
+        
+                                                             
+        
     }
 
     func onClick(point:Point) {
         if game != nil {
-            game!.onClick(point:point, userId:userId)
+            game!.onClick(boardSettings:boardSettings, point:point, userId:userId)
         }
     }
 
@@ -54,12 +65,14 @@ class Menu {
             return
         }
         if game!.isReady(imageLibrary:imageLibrary) {
-            game!.renderGame(imageLibrary:imageLibrary, canvas:canvas)
+            game!.renderGame(imageLibrary:imageLibrary, boardSettings:boardSettings, canvas:canvas)
             lastRenderedState = game!.gameState
         }
         
         canvas.render(Rectangle(rect:gameRect, fillMode:.stroke), Rectangle(rect:sideBarRect, fillMode:.stroke))
     }
+
+    
     
     func setGameRect(size:Size) -> Rect {
         let updatedMainRect = setMainRect(size:size)

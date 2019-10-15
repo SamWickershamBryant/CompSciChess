@@ -2,12 +2,12 @@ import Igis
 
 class Board {
 
-    var topLeft : Point 
+   /* var topLeft : Point 
     var size : Int
     let outLineColor : Color
     let inLineColor : Color
     let squareColor : [Color]
-    let lineWidth : Int        
+    let lineWidth : Int*/        
     var boardstate : [[Piece?]]
     var enPassant : [Point]
     var whosMove : String
@@ -29,18 +29,14 @@ class Board {
         print("false:\(Board.moveLeavesKingInDanger(from:Point(x:5,y:3), to:Point(x:5,y:2), boardstate:boardstate))")
         print("true:\(Board.moveLeavesKingInDanger(from:Point(x:5,y:3), to:Point(x:5,y:5), boardstate:boardstate))")
     }
+
+    
     
           
-    init(topLeft:Point, size:Int, boardstate:[[Piece?]] = Board.defaultBoardstate(), whosMove : String = "w",
-         outLineColor:Color = Color(.black), inLineColor:Color = Color(.black), squareColor:[Color] = [Color(red:201, green:172, blue:113), Color(red:115, green:92, blue:46)],
-         lineWidth:Int = 2){
-        self.topLeft = topLeft
-        self.size = size // input not sanitized... yet (MUST be divisible by 8)
+    init(boardstate:[[Piece?]] = Board.defaultBoardstate(), whosMove : String = "w"){
+       
         self.boardstate = boardstate
-        self.outLineColor = outLineColor
-        self.inLineColor = inLineColor
-        self.squareColor = squareColor
-        self.lineWidth = lineWidth
+       
         self.enPassant = []
         self.whosMove = whosMove
         self.kingInCheck = false
@@ -117,6 +113,7 @@ class Board {
     }
        
     func movePiece(from:Point, to:Point) {
+        print("STARTING MOVE PIECE")
         guard Board.inBounds(from) != false else {
             print("Starting piece out of bounds")
             return
@@ -216,19 +213,18 @@ class Board {
         } else if piece!.color == "b" {
             whosMove = "w"
         }
+
+        print("FINISH MOVE PIECE")
     }
     
     // moveBoard moves the entire board to a position (topleft = destination)
-    func moveBoard(topLeft:Point) {
-        self.topLeft = topLeft
-    }
+    
 
     
-    func resizeBoard(size:Int) {
-        self.size = size
-    }
+    
 
     static func moveLeavesKingInDanger(from:Point, to:Point, boardstate:[[Piece?]]) -> Bool {
+        print("STARTING DANGER CHECK")
         var testBoard = boardstate
         guard Board.inBounds(from) != false else {
             print("Starting piece out of bounds")
@@ -263,9 +259,10 @@ class Board {
                 if thisPiece != nil{
                     if thisPiece!.color == enemyTeam {
                         let moveList = thisPiece!.moveList(boardstate:testBoard)
-                        if moveList.filter({
-                            Board.pieceAt($0, boardstate:testBoard) != nil}).filter({
+                        let moveListTake = moveList.filter({Board.pieceAt($0, boardstate:testBoard) != nil})
+                        if moveListTake.filter({
                             Board.pieceAt($0, boardstate:testBoard)!.type == "k"}).count > 0 {
+                            print("FINISH DANGER CHECK TRUE")
                             return true
                         }
                         
@@ -274,6 +271,7 @@ class Board {
                 }
             }
         }
+        print("FINISH DANGER CHECK FALSE")
 
         return false
         
@@ -290,10 +288,13 @@ class Board {
             print("piece does not exit at \(of)")
             return []
         }
+        print("STARTING LEGAL MOVES")
         return Board.pieceAt(of, boardstate:boardstate)!.legalMoves(boardstate:boardstate)
+        
     }
 
-    func renderMoves(of:Point, canvas:Canvas) {
+    func renderMoves(of:Point, boardSettings:BoardSettings, canvas:Canvas) {
+        print("STARTING RENDER MOVES")
         guard Board.inBounds(of) else {
             print("not in bounds: \(of)")
             return
@@ -303,11 +304,11 @@ class Board {
             print("cant render moves of empty space!")
             return
         } else {
-            let sideLength = size / 8
+            let sideLength = boardSettings.size / 8
             
             
-            let thisPiecePosOnBoard = Point(x:topLeft.x + (of.x * sideLength) + (sideLength / 2),
-                                          y:topLeft.y + (of.y * sideLength) + (sideLength / 2))
+            let thisPiecePosOnBoard = Point(x:boardSettings.topLeft.x + (of.x * sideLength) + (sideLength / 2),
+                                            y:boardSettings.topLeft.y + (of.y * sideLength) + (sideLength / 2))
             let thisPieceCircle = Ellipse(center: thisPiecePosOnBoard, radiusX: sideLength  / 4, radiusY: sideLength / 4, fillMode:.fill)
             let moveColor = Color(.cornsilk)
             let thisColor = Color(.darkolivegreen)
@@ -319,13 +320,14 @@ class Board {
                 print("no legal moves!")
             } else {
                 for legalMove in legalMoves {
-                    let piecePosOnBoard = Point(x:topLeft.x + (legalMove.x * sideLength) + (sideLength / 2),
-                                                y:topLeft.y + (legalMove.y * sideLength) + (sideLength / 2))
+                    let piecePosOnBoard = Point(x:boardSettings.topLeft.x + (legalMove.x * sideLength) + (sideLength / 2),
+                                                y:boardSettings.topLeft.y + (legalMove.y * sideLength) + (sideLength / 2))
                     let pieceCircle = Ellipse(center:piecePosOnBoard, radiusX: sideLength / 4, radiusY: sideLength / 4, fillMode:.fill)
                     canvas.render(pieceCircle)
                 }
             }
         }
+        print("FINISH RENDER MOVES")
         
     }
 
@@ -333,12 +335,12 @@ class Board {
         return imageLibrary.imagesReady()
     }
     
-    func renderPiecesAsImage(imageLibrary:ImageLibrary, canvas:Canvas) {
-        let sideLength = size / 8
+    func renderPiecesAsImage(imageLibrary:ImageLibrary, boardSettings:BoardSettings, canvas:Canvas) {
+        let sideLength = boardSettings.size / 8
         for row in 0 ... 7 {
             for piece in 0 ... 7 {
-                let boundingRect = Rect(topLeft:Point(x:topLeft.x + (piece * sideLength),
-                                                      y:topLeft.y + (row * sideLength)),
+                let boundingRect = Rect(topLeft:Point(x:boardSettings.topLeft.x + (piece * sideLength),
+                                                      y:boardSettings.topLeft.y + (row * sideLength)),
                                         size:Size(width:sideLength, height:sideLength))
                 let pieceToDisplay = boardstate[row][piece]
                 if pieceToDisplay != nil {
@@ -354,13 +356,13 @@ class Board {
         
     }
 
-    func renderPiecesAsText(canvas:Canvas) {
-        let sideLength = size / 8
+    func renderPiecesAsText(boardSettings:BoardSettings,canvas:Canvas) {
+        let sideLength = boardSettings.size / 8
         for row in 0 ... 7 {
             for piece in 0 ... 7 {
                 //boardstate[row][piece]
-                let location = Point(x:topLeft.x + (piece * sideLength) + (sideLength / 2),
-                                     y:topLeft.y + (row * sideLength) + (sideLength / 2))
+                let location = Point(x:boardSettings.topLeft.x + (piece * sideLength) + (sideLength / 2),
+                                     y:boardSettings.topLeft.y + (row * sideLength) + (sideLength / 2))
                 let fontSize = 10
                 let pieceToDisplay = boardstate[row][piece]
                 if pieceToDisplay != nil {
@@ -379,15 +381,15 @@ class Board {
         }
     }
 
-    func renderBoard(canvas:Canvas) {
+    func renderBoard(boardSettings:BoardSettings,canvas:Canvas) {
         //render squares, then inlines, then outlines in that order
         print("finna render the board")
-         let sideLength = size / 8 // side length of a single square
+        let sideLength = boardSettings.size / 8 // side length of a single square
 
          //render squares:
 
         func incrementColor(index: inout Int) {
-            if index >= squareColor.count - 1 {
+            if index >= boardSettings.squareColor.count - 1 {
                 index = 0
             } else {
                 index += 1
@@ -402,12 +404,12 @@ class Board {
                 if (column % 2 != 0) {
                     __row = 7 - row
                 }
-                let squareTopLeft = Point(x:topLeft.x + (__row * sideLength),
-                                          y:topLeft.y + (column * sideLength))
+                let squareTopLeft = Point(x:boardSettings.topLeft.x + (__row * sideLength),
+                                          y:boardSettings.topLeft.y + (column * sideLength))
                 
                 let rect = Rect(topLeft:squareTopLeft, size:Size(width:sideLength, height:sideLength))
                 let rectangle = Rectangle(rect:rect, fillMode: .fill)
-                let fillStyle = FillStyle(color:squareColor[colorIndex])
+                let fillStyle = FillStyle(color:boardSettings.squareColor[colorIndex])
                 canvas.render(fillStyle)
                 canvas.render(rectangle)
                 incrementColor(index:&colorIndex)
@@ -415,32 +417,32 @@ class Board {
             }
         }
         //render inLines:
-        let inStrokeStyle = StrokeStyle(color:inLineColor)
+        let inStrokeStyle = StrokeStyle(color:boardSettings.inLineColor)
         canvas.render(inStrokeStyle)
-        canvas.render(LineWidth(width:lineWidth))
+        canvas.render(LineWidth(width:boardSettings.lineWidth))
         for row in 1 ... 7 {
-            let verticalLine = Lines(from:Point(x:topLeft.x + (row * sideLength),
-                                                y:topLeft.y),
-                                     to:Point(x:topLeft.x + (row * sideLength),
-                                              y:topLeft.y + size))
+            let verticalLine = Lines(from:Point(x:boardSettings.topLeft.x + (row * sideLength),
+                                                y:boardSettings.topLeft.y),
+                                     to:Point(x:boardSettings.topLeft.x + (row * sideLength),
+                                              y:boardSettings.topLeft.y + boardSettings.size))
             
             canvas.render(verticalLine)
         }
 
         for collumn in 1 ... 7 {
-            let horizontalLine = Lines(from:Point(x:topLeft.x,
-                                                  y:topLeft.y + (collumn * sideLength)),
-                                       to:Point(x:topLeft.x + size,
-                                                y:topLeft.y + (collumn * sideLength)))
+            let horizontalLine = Lines(from:Point(x:boardSettings.topLeft.x,
+                                                  y:boardSettings.topLeft.y + (collumn * sideLength)),
+                                       to:Point(x:boardSettings.topLeft.x + boardSettings.size,
+                                                y:boardSettings.topLeft.y + (collumn * sideLength)))
             canvas.render(horizontalLine)
         }
 
         //render outLines:
-        let outStrokeStyle = StrokeStyle(color:outLineColor)
+        let outStrokeStyle = StrokeStyle(color:boardSettings.outLineColor)
         canvas.render(outStrokeStyle)
-        canvas.render(LineWidth(width:lineWidth * 2))
+        canvas.render(LineWidth(width:boardSettings.lineWidth * 2))
 
-        let outRect = Rect(topLeft:topLeft, size:Size(width:size, height:size))
+        let outRect = Rect(topLeft:boardSettings.topLeft, size:Size(width:boardSettings.size, height:boardSettings.size))
         let outRectangle = Rectangle(rect:outRect, fillMode: .stroke)
         canvas.render(outRectangle)
         

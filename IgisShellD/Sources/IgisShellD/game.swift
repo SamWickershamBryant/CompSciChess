@@ -11,12 +11,12 @@ class Game {
     var gameState : Int
                                 
 
-    let users: [Int]
+    var users: [Int]
 
     
 
     init(users:[Int]) {
-        board = Board(topLeft:Point(x:100, y:100), size: 800)
+        board = Board()
         choosing = false
         choosingPoint = Point(x:0, y:0)
 
@@ -41,40 +41,40 @@ class Game {
     }
 
 
-    func renderGame(imageLibrary:ImageLibrary, canvas:Canvas) {
-        board.renderBoard(canvas:canvas)
+    func renderGame(imageLibrary:ImageLibrary, boardSettings:BoardSettings, canvas:Canvas) {
+        board.renderBoard(boardSettings:boardSettings, canvas:canvas)
         if choosing == true {
-            board.renderMoves(of:choosingPoint, canvas:canvas)
+            board.renderMoves(of:choosingPoint, boardSettings:boardSettings, canvas:canvas)
         }
-        board.renderPiecesAsImage(imageLibrary:imageLibrary, canvas:canvas)
+        board.renderPiecesAsImage(imageLibrary:imageLibrary, boardSettings:boardSettings, canvas:canvas)
 
     }
 
-    func clickPosition(point:Point) -> Point {
-        let squareSize = board.size / 8
-        let chessX = (point.x - board.topLeft.x) / squareSize
-        let chessY = (point.y - board.topLeft.y) / squareSize
+    func clickPosition(boardSettings:BoardSettings, point:Point) -> Point {
+        let squareSize = boardSettings.size / 8
+        let chessX = (point.x - boardSettings.topLeft.x) / squareSize
+        let chessY = (point.y - boardSettings.topLeft.y) / squareSize
         return Point(x:chessX,y:chessY)
     }
 
-    func clickOnBoard(point:Point) -> Bool {
-        return (point.x > board.topLeft.x) &&
-          (point.x < (board.topLeft.x + board.size)) &&
-          (point.y > board.topLeft.y) &&
-          (point.y < (board.topLeft.y + board.size))
+    func clickOnBoard(boardSettings:BoardSettings, point:Point) -> Bool {
+        return (point.x > boardSettings.topLeft.x) &&
+          (point.x < (boardSettings.topLeft.x + boardSettings.size)) &&
+          (point.y > boardSettings.topLeft.y) &&
+          (point.y < (boardSettings.topLeft.y + boardSettings.size))
     }
 
-    func onClick(point:Point, userId:Int) {
+    func onClick(boardSettings:BoardSettings, point:Point, userId:Int) {
         guard users.contains(userId) else {
             print("you aint a user cuh")
             return
         }
-        guard clickOnBoard(point:point) else {
+        guard clickOnBoard(boardSettings:boardSettings, point:point) else {
             choosing = false
             boardChanged()
             return
         }
-        let pos = clickPosition(point:point)
+        let pos = clickPosition(boardSettings:boardSettings, point:point)
         guard Board.inBounds(pos) else {
             print("you shouldnt see this message owO")
             return
