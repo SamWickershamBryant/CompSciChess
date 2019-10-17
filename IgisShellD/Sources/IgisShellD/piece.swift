@@ -120,10 +120,7 @@ class Piece : CustomStringConvertible {
         var unfilteredLegalMoves = [Point]()
 
         let kingPiece = Board.pieceAt(Board.findPiece(self.color,"k",boardstate:boardstate)[0],boardstate:boardstate)        
-
-
         
-        // King moves around
         //tm        
         unfilteredLegalMoves.append(Point(x:kingPiece!.position.x,y:kingPiece!.position.y-1))
         //tl
@@ -156,9 +153,28 @@ class Piece : CustomStringConvertible {
                 }
             }
         }
-
+        return finalUnfilteredLegalMoves        
+    }    
+    func parseKingCastleMoves(boardstate:[[Piece?]]) -> [Point] {
         
         // Castle rights --------------------------------------------------
+        let kingPiece = Board.pieceAt(Board.findPiece(self.color,"k",boardstate:boardstate)[0],boardstate:boardstate)
+        var finalUnfilteredLegalMoves = [Point]()
+        
+        // enemy moves
+        var enemyMoves = [Point]()        
+        for i in 0...7 {
+            for j in 0...7 {
+                if boardstate[i][j] != nil {
+                    if boardstate[i][j]!.color != kingPiece!.color {
+                        for move in boardstate[i][j]!.moveList(boardstate:boardstate) {
+                            enemyMoves.append(move)
+                        }
+                    }
+                }
+            }
+        }
+        
         var count = 0        
         if kingPiece!.hasMoved == false {
             // white castle
@@ -167,18 +183,21 @@ class Piece : CustomStringConvertible {
                 // left side castle
                 for i in 1..<4 {
                     if boardstate[kingPiece!.position.y][kingPiece!.position.x-i] == nil {
-                        count += 1
+                        for move in enemyMoves {                            
+                            if move.x != boardstate[kingPiece!.position.y][kingPiece!.position.x-i]!.position.x
+                            && move.y != boardstate[kingPiece!.position.y][kingPiece!.position.x-i]!.position.y {                                
+                                count += 1
+                            }
+                        }
                     } else {
                         break
                     }
                 }
                 // if there are no obstructing pieces
-                print(count)
                 if count == 3  {
                     // if rook has moved
                     if boardstate[kingPiece!.position.y][kingPiece!.position.x-4]!.type == "r" {
-                        if boardstate[kingPiece!.position.y][kingPiece!.position.x-4]!.hasMoved == false {
-                            
+                        if boardstate[kingPiece!.position.y][kingPiece!.position.x-4]!.hasMoved == false {                            
                             finalUnfilteredLegalMoves.append(Point(x:kingPiece!.position.x-2,y:kingPiece!.position.y))
                         }
                     }
@@ -188,7 +207,12 @@ class Piece : CustomStringConvertible {
                 // right side castle
                 for i in 1..<3 {
                     if boardstate[kingPiece!.position.y][kingPiece!.position.x+i] == nil {
-                        count += 1
+                        for move in enemyMoves {                            
+                            if move.x != boardstate[kingPiece!.position.y][kingPiece!.position.x+i]!.position.x
+                            && move.y != boardstate[kingPiece!.position.y][kingPiece!.position.x+i]!.position.y {        
+                                count += 1
+                            }
+                        }
                     } else {
                         break
                     }
@@ -211,7 +235,12 @@ class Piece : CustomStringConvertible {
                 // left side black castle
                 for i in 1..<4 {
                     if boardstate[kingPiece!.position.y][kingPiece!.position.x-i] == nil {
-                        count += 1
+                        for move in enemyMoves {
+                            if move.x != boardstate[kingPiece!.position.y][kingPiece!.position.x-i]!.position.x
+                            && move.y != boardstate[kingPiece!.position.y][kingPiece!.position.x-i]!.position.y {        
+                                count += 1
+                            }
+                        }
                     } else {
                         break
                     }
@@ -228,7 +257,12 @@ class Piece : CustomStringConvertible {
                 // right side black castle
                 for i in 1..<3 {
                     if boardstate[kingPiece!.position.y][kingPiece!.position.x+i] == nil {
-                        count += 1
+                        for move in enemyMoves {                            
+                            if move.x != boardstate[kingPiece!.position.y][kingPiece!.position.x+i]!.position.x
+                            && move.y != boardstate[kingPiece!.position.y][kingPiece!.position.x+i]!.position.y {        
+                                count += 1
+                            }
+                        }
                     } else {
                         break
                     }
@@ -244,12 +278,9 @@ class Piece : CustomStringConvertible {
             }    
         }
         // End of Castle Rights ------------------------------------------------------------------------------------
-        
-        return finalUnfilteredLegalMoves        
-    }
 
-    func parseKingCastleMoves(boardstate:[[Piece?]]) -> [Point] {
-        return []
+
+        return finalUnfilteredLegalMoves
         // yugi split these hoes up, its causing errors with the board
     }
     
