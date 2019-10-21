@@ -64,7 +64,7 @@ class Board {
     }
     
           
-    init(boardstate:[[Piece?]] = Board.defaultBoardstate(), whosMove : String = "w"){
+    init(boardstate:[[Piece?]] = Board.defaultBoardstate(), whosMove : String = "b"){
        
         self.boardstate = boardstate
        
@@ -162,90 +162,92 @@ class Board {
         
         let piece = Board.pieceAt(from,boardstate:boardstate)
 
-
-        var needToClear = true
-        
-        if piece!.type != "p" {
-            if Board.pieceAt(Point(x:to.x,y:to.y),boardstate:boardstate) != nil {
-                // if a pieces point is -1,-1 its considered "dead"            
-                Board.pieceAt(Point(x:to.x,y:to.y),boardstate:boardstate)!.position = Point(x:-1,y:-1)
+        if piece!.color == whosMove {
+            
+            var needToClear = true
+            
+            if piece!.type != "p" {
+                if Board.pieceAt(Point(x:to.x,y:to.y),boardstate:boardstate) != nil {
+                    // if a pieces point is -1,-1 its considered "dead"            
+                    Board.pieceAt(Point(x:to.x,y:to.y),boardstate:boardstate)!.position = Point(x:-1,y:-1)
+                }
+            } else { // pawn garbage
+                if abs(to.y - from.y) == 2 && abs(to.x - from.x) == 0 {
+                    piece!.enPassantTarget = true
+                    if enPassant.count > 0 {
+                        for point in enPassant {
+                            boardstate[point.y][point.x]!.enPassantTarget = false
+                        }
+                        enPassant = []
+                    }
+                    needToClear = false
+                    enPassant.append(to)
+                } else {
+                    var adder = -1
+                    if piece!.color == "b" {
+                        adder = 1
+                    }
+                    let upLeft = to.x - from.x == -1 && to.y - from.y == adder
+                    let upRight = to.x - from.x == 1 && to.y - from.y == adder
+                    if upLeft {
+                        if Board.pieceAt(to, boardstate:boardstate) == nil {
+                            let left = Point(x:to.x, y:from.y)
+                            print("2 more")
+                            if Board.pieceAt(left, boardstate:boardstate) != nil {
+                                print("1 more")
+                                if Board.pieceAt(left, boardstate:boardstate)!.enPassantTarget {
+                                    boardstate[left.y][left.x]!.position = Point(x:-1,y:-1)
+                                    boardstate[left.y][left.x] = nil
+                                    print("left")
+                                }
+                            }
+                        } else {
+                            boardstate[to.y][to.x]!.position = Point(x:-1, y:-1)
+                        }
+                    } 
+                    else if upRight {
+                        print("dont see this")
+                        if Board.pieceAt(to, boardstate:boardstate) == nil {
+                            let right = Point(x:to.x, y:from.y)
+                            if Board.pieceAt(right, boardstate:boardstate) != nil {
+                                if Board.pieceAt(right, boardstate:boardstate)!.enPassantTarget {
+                                    boardstate[right.y][right.x]!.position = Point(x:-1,y:-1)
+                                    boardstate[right.y][right.x] = nil
+                                    print("right")
+                                }
+                            }
+                        } else {
+                            boardstate[to.y][to.x]!.position = Point(x:-1, y:-1)
+                        }
+                    }
+                }
             }
-        } else { // pawn garbage
-            if abs(to.y - from.y) == 2 && abs(to.x - from.x) == 0 {
-                piece!.enPassantTarget = true
+            if needToClear {
                 if enPassant.count > 0 {
                     for point in enPassant {
-                        boardstate[point.y][point.x]!.enPassantTarget = false
+                        if boardstate[point.y][point.x] != nil {
+                            boardstate[point.y][point.x]!.enPassantTarget = false
+                        }
                     }
                     enPassant = []
                 }
-                needToClear = false
-                enPassant.append(to)
-            } else {
-                var adder = -1
-                if piece!.color == "b" {
-                    adder = 1
-                }
-                let upLeft = to.x - from.x == -1 && to.y - from.y == adder
-                let upRight = to.x - from.x == 1 && to.y - from.y == adder
-                if upLeft {
-                    if Board.pieceAt(to, boardstate:boardstate) == nil {
-                        let left = Point(x:to.x, y:from.y)
-                        print("2 more")
-                        if Board.pieceAt(left, boardstate:boardstate) != nil {
-                            print("1 more")
-                            if Board.pieceAt(left, boardstate:boardstate)!.enPassantTarget {
-                                boardstate[left.y][left.x]!.position = Point(x:-1,y:-1)
-                                boardstate[left.y][left.x] = nil
-                                print("left")
-                            }
-                        }
-                    } else {
-                        boardstate[to.y][to.x]!.position = Point(x:-1, y:-1)
-                    }
-                } 
-                else if upRight {
-                    print("dont see this")
-                    if Board.pieceAt(to, boardstate:boardstate) == nil {
-                        let right = Point(x:to.x, y:from.y)
-                        if Board.pieceAt(right, boardstate:boardstate) != nil {
-                            if Board.pieceAt(right, boardstate:boardstate)!.enPassantTarget {
-                                boardstate[right.y][right.x]!.position = Point(x:-1,y:-1)
-                                boardstate[right.y][right.x] = nil
-                                print("right")
-                            }
-                        }
-                    } else {
-                        boardstate[to.y][to.x]!.position = Point(x:-1, y:-1)
-                    }
-                }
             }
-        }
-        if needToClear {
-            if enPassant.count > 0 {
-                for point in enPassant {
-                    if boardstate[point.y][point.x] != nil {
-                        boardstate[point.y][point.x]!.enPassantTarget = false
-                    }
-                }
-                enPassant = []
+            print("reaaaally close")
+            piece!.position = Point(x:to.x, y:to.y)
+            piece!.hasMoved = true
+            boardstate[to.y][to.x] = piece
+            boardstate[from.y][from.x] = nil
+            print("made it!")
+            
+            if  piece!.color == "w" {
+                //print("black in check: \(inCheck(color:"b"))")
+                whosMove = "b"
+            } else if piece!.color == "b" {
+                whosMove = "w"
             }
+            
+            print("FINISH MOVE PIECE")
         }
-        print("reaaaally close")
-        piece!.position = Point(x:to.x, y:to.y)
-        piece!.hasMoved = true
-        boardstate[to.y][to.x] = piece
-        boardstate[from.y][from.x] = nil
-        print("made it!")
-       
-        if  piece!.color == "w" {
-            //print("black in check: \(inCheck(color:"b"))")
-            whosMove = "b"
-        } else if piece!.color == "b" {
-            whosMove = "w"
-        }
-
-        print("FINISH MOVE PIECE")
     }
     
     // moveBoard moves the entire board to a position (topleft = destination)

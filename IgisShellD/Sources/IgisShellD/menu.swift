@@ -14,7 +14,7 @@ class Menu {
     var game : Game? = nil
     var lastRenderedState = -1
     let userId : Int
-
+        
     var canvasSize : Size
     
     init(userId:Int){
@@ -40,7 +40,7 @@ class Menu {
             game!.onClick(boardSettings:boardSettings, point:point, userId:userId)
         }
     }
-
+    
     func joinGame(game:Game) {
         self.game = game
     }
@@ -72,7 +72,6 @@ class Menu {
         canvas.render(Rectangle(rect:gameRect, fillMode:.stroke), Rectangle(rect:sideBarRect, fillMode:.stroke))
     }
 
-    
     
     func setGameRect(size:Size) -> Rect {
         let updatedMainRect = setMainRect(size:size)
