@@ -64,7 +64,7 @@ class Board {
     }
     
           
-    init(boardstate:[[Piece?]] = Board.defaultBoardstate(), whosMove : String = "b"){
+    init(boardstate:[[Piece?]] = Board.defaultBoardstate(), whosMove : String = "w"){
        
         self.boardstate = boardstate
        
