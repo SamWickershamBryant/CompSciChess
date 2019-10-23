@@ -125,19 +125,19 @@ class Board {
             count += 1
         }
     }    
-    func alivePieces(side:String) -> [Piece] { 
-        var whitePieces = [Piece]()
+    func alivePieces(color:String) -> [Piece] { 
+        var pieces = [Piece]()
         for row in 0...7 {
             for column in 0...7 {
                 let piece = boardstate[row][column]
                 if piece != nil {
-                    if piece!.color == side {
-                        whitePieces.append(piece!)
+                    if piece!.color == color {
+                        pieces.append(piece!)
                     }
                 }
             }
         }
-        return whitePieces
+        return pieces
     }
     static func inBounds(_ pos:Point) -> Bool {
         return pos.x <= 7 && pos.y <= 7 && pos.x >= 0 && pos.y >= 0
@@ -310,7 +310,7 @@ class Board {
 
         return false
         
-
+        
         
     }
 
@@ -510,7 +510,7 @@ class Board {
                         }
                         
                     // <- gives OPTIONAL piece, nil = empty space.
-                // check if color is opposite, then if .moveList() (-> [Point]) hits frienly king
+                // check if color is opposite, then if .moveList() (-> [Point]) hits friendly king
                 // Board.pieceAt(point, boardstate:boardstate) -> optional piece <- check if it is friendly king, if so return true, if not then false
                     }
                 }
@@ -520,5 +520,31 @@ class Board {
         return inCheck
     }
    
-
+    func inCheckmate(color:String) -> Bool {
+        let friendlyKingPosition = Board.findPiece("\(color)", "k", boardstate: boardstate)
+        let friendlyKing = Board.pieceAt(friendlyKingPosition[0], boardstate:boardstate)
+        if friendlyKing != nil {
+            print(friendlyKing, friendlyKing!)
+            if inCheck(color:color) && friendlyKing!.legalMoves(boardstate:boardstate).count == 0 {
+                let potentialSaviorPieces = alivePieces(color:color)
+                var saviorPieces : [Piece] = []
+                //var saviorMoves : [String]
+                for piece in potentialSaviorPieces {
+                    for _ in piece.legalMoves(boardstate:boardstate) {
+                        if inCheck(color:"\(color)") == false {
+                            saviorPieces.append(piece)
+                            //saviorMoves.append("\(piece)\(move)")
+                        }
+                    }
+                }
+                if saviorPieces.count == 0 {
+                    print("\(color)King is in checkmate")
+                    return true
+                }
+            }
+        }
+        print("\(color)King is not in checkmate")
+        return false
+    }
 }
+

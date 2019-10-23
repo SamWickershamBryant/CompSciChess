@@ -384,7 +384,7 @@ class Piece : CustomStringConvertible {
     }
     
     var description : String {
-        return "\(color)\(type)"
+        return "Piece:\(color)\(type)"
         
     }
 }

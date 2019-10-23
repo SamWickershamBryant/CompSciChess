@@ -7,7 +7,7 @@ class Menu {
     var mainRect : Rect //width will be >=65% of gameRect (until divisible by 8)
                         //height will be <=canvasHeight (until divisible by 10))
     var sideBarRect : Rect //width will be <=35% of gameRect (until mainRect divisible by 8)
-    //height will be = mainRect
+                           //height will be = mainRect
 
     var boardSettings : BoardSettings
 

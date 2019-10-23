@@ -58,7 +58,6 @@ class Painter : PainterBase {
     
     override func render(canvas:Canvas) {
         menu.update(imageLibrary:library, canvas:canvas)
-       
     }
 
     override func calculate(canvasId:Int, canvasSize:Size?) {
@@ -67,6 +66,12 @@ class Painter : PainterBase {
 
     override func onClick(location:Point) {
         menu.onClick(point:location)
+        if Painter.game.board.inCheckmate(color:"b") {
+            print("White wins")
+        }
+        if Painter.game.board.inCheckmate(color:"w") {
+            print("Black wins")
+        }
     }
 
     override func onMouseMove(location:Point) {
