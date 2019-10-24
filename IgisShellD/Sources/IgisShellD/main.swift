@@ -9,6 +9,8 @@ class Painter : PainterBase {
     var user : Int
 
     var menu : Menu
+
+    var renderHolder : Bool
     
     required init() {
         library = ImageLibrary()
@@ -16,6 +18,8 @@ class Painter : PainterBase {
         user = Painter.nextUser
         Painter.nextUser += 1
 
+        renderHolder = false
+        
         print("user no \(user)")
             
         menu = Menu(userId:user)
@@ -31,6 +35,9 @@ class Painter : PainterBase {
     override func setup(canvas:Canvas) {
         library.loadImages(canvas:canvas)
         
+        let clearScreen = Rectangle(rect:Rect(topLeft:Point(x:0, y:0), size:Size(width:5000, height:5000)), fillMode:.fillAndStroke)
+        let fillStyle = FillStyle(color:Color(.white))
+        canvas.render(fillStyle, clearScreen)
         
         //print("game setup")
        

@@ -1,3 +1,4 @@
+
 import Igis
 import Foundation
 
@@ -28,17 +29,16 @@ class Menu {
         topMarginRect = Rect(topLeft:Point(x:20, y:0), size:Size(width:5, height:5))
         boardRect = Rect(topLeft:Point(x:20, y:0), size:Size(width:5, height:5))
         bottomMarginRect = Rect(topLeft:Point(x:20, y:0), size:Size(width:5, height:5))
-    
+
         self.userId = userId
         self.canvasSize = Size(width: 10000, height: 8000)
         self.boardSettings = BoardSettings(topLeft:Point(x:100,y:100),
-                                           size:800,
+                                           size:0,
                                            outLineColor:Color(.black),
                                            inLineColor:Color(.black),
                                            squareColor:[Color(red:201, green:172, blue:113), Color(red:115, green:92, blue:46)],
                                            lineWidth:2)
-        
-                                                             
+
         
     }
 
@@ -105,14 +105,11 @@ class Menu {
         return
     }
     
-    
-    
-    
     func setMainRect(canvas:Canvas) {
         let canvasWidth = canvasSize.width
         let canvasHeight = canvasSize.height
         
-        var updatedWidth = canvasWidth - ((canvasWidth * 65) / 100)
+        var updatedWidth = canvasWidth - ((canvasWidth * 35) / 100)
         while updatedWidth % 8 != 0 {
             updatedWidth += 1
         }
@@ -148,12 +145,11 @@ class Menu {
         topMarginRect.size = Size(width:mainWidth, height:mainHeight / 10)
         boardRect.size = Size(width:mainWidth, height:(mainHeight / 10) * 8)
         bottomMarginRect.size = Size(width:mainWidth, height:mainHeight / 10)
-
+        
         //making the board a square and redistributing the excess space
         let boardWidth = boardRect.size.width
         var boardHeight = boardRect.size.height
         var excessSpace = 0
-        
         if boardHeight > boardWidth {
                     
             repeat {
@@ -161,7 +157,7 @@ class Menu {
                 excessSpace += 1
             } while boardHeight != boardWidth
 
-            topMarginRect.size = Size(width:mainWidth, height:(mainHeight/10) + excessSpace/2)
+            topMarginRect.size = Size(width:mainWidth, height:(mainHeight/10) + (excessSpace/2))
             excessSpace -= excessSpace/2
             bottomMarginRect.size = Size(width:mainWidth, height:(mainHeight/10) + excessSpace)
             boardRect.size = Size(width:mainWidth, height:boardHeight)
@@ -176,6 +172,7 @@ class Menu {
             topMarginRect.size = Size(width:mainWidth, height:(mainHeight/10) + excessSpace/2)
             excessSpace -= excessSpace/2
             bottomMarginRect.size = Size(width:mainWidth, height:(mainHeight/10) + excessSpace)
+            boardRect.size = Size(width:mainWidth, height:boardHeight)
         }
 
         topMarginRect.topLeft = Point(x:mainRect.topLeft.x, y:mainRect.topLeft.y)
