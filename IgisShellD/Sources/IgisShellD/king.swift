@@ -15,7 +15,8 @@ class King : Piece {
     }
 
     override func legalMoves(boardstate:[[Piece?]]) -> [Point] {
-        return moveList(boardstate:boardstate).filter({!Board.moveLeavesKingInDanger(from:self.position, to:$0, boardstate:boardstate)})
+        return moveList(boardstate:boardstate).filter({!Board.moveLeavesKingInDanger(from:self.position, to:$0, boardstate:boardstate)}) +
+          parseKingCastleMoves(boardstate:boardstate)
         // in future return movelist AND castle moves
     }
 
