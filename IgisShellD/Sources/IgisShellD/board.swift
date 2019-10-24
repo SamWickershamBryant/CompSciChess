@@ -534,10 +534,9 @@ class Board {
             }
         }
         print("\(color) Checkmate is \(!hasLegalMoves)")
-        if color == "w" { print("Black Wins!") }
-        else { print("White Wins!") }
         return !hasLegalMoves
         
+        // vv garbage code before I had a brain blast vv
         
         /*let friendlyKingPosition = Board.findPiece("\(color)", "k", boardstate: boardstate)[0]
         let friendlyKing = Board.pieceAt(friendlyKingPosition, boardstate:boardstate)
@@ -564,6 +563,5 @@ class Board {
         print("\(color)King is not in checkmate")
         return false*/
     }
-    */
 }
 
