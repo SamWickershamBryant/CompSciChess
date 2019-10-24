@@ -33,18 +33,6 @@ class Painter : PainterBase {
         
         
         //print("game setup")
-        
-       
-       
-       
-        
-       
-       
-
-       
-       
-       
-       
        
 //        print("Piece at (4,0) is \(newBoard.pieceAt(Point(x:4,y:0))!.type)")
   //      print("Piece at (2,3) is \(newBoard.pieceAt(Point(x:2,y:3)))")
@@ -58,6 +46,8 @@ class Painter : PainterBase {
     
     override func render(canvas:Canvas) {
         menu.update(imageLibrary:library, canvas:canvas)
+        menu.canvasSize = canvas.canvasSize!
+        menu.setAllRects(canvas:canvas)
     }
 
     override func calculate(canvasId:Int, canvasSize:Size?) {
@@ -67,10 +57,10 @@ class Painter : PainterBase {
     override func onClick(location:Point) {
         menu.onClick(point:location)
         if Painter.game.board.inCheckmate(color:"b") {
-            print("White wins")
+            print("White wins!")
         }
         if Painter.game.board.inCheckmate(color:"w") {
-            print("Black wins")
+            print("Black wins!")
         }
     }
 

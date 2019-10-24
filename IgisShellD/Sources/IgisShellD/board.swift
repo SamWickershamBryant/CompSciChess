@@ -13,7 +13,7 @@ class Board {
     var whosMove : String
     var kingInCheck : Bool
 
-    static func defaultBoardstate() -> [[Piece?]]{return [[Rook("b"), Knight("b"), Bishop("b"), Queen("b"), King("b"), Bishop("b"), Knight("b"), Rook("b")],
+    static func defaultBoardstate() -> [[Piece?]] {return [[Rook("b"), Knight("b"), Bishop("b"), Queen("b"), King("b"), Bishop("b"), Knight("b"), Rook("b")],
                                     [Pawn("b"),Pawn("b"),Pawn("b"),Pawn("b"),Pawn("b"),Pawn("b"),Pawn("b"),Pawn("b")],
                                     [nil, nil, nil, nil, nil, nil, nil, nil],
                                     [nil, nil, nil, nil, nil, nil, nil, nil],
@@ -402,7 +402,6 @@ class Board {
                 }
             }
         }
-        
     }
 
     func renderPiecesAsText(boardSettings:BoardSettings,canvas:Canvas) {
@@ -535,33 +534,41 @@ class Board {
         }
         print("\(color) Checkmate is \(!hasLegalMoves)")
         return !hasLegalMoves
+    }
+
+
+
+
+
+    
+    /*func AImove(boardstate:[[Piece?]], aiColor:String) -> [Point] {
+        let blackPieces = alivePieces(color:"b")
+        let whitePieces = alivePieces(color:"w")
         
-        // vv garbage code before I had a brain blast vv
-        
-        /*let friendlyKingPosition = Board.findPiece("\(color)", "k", boardstate: boardstate)[0]
-        let friendlyKing = Board.pieceAt(friendlyKingPosition, boardstate:boardstate)
-        if friendlyKing != nil {
-            if inCheck(color:color) && friendlyKing!.legalMoves(boardstate:boardstate).count == 0 {
-                let potentialSaviorPieces = alivePieces(color:color)
-                var saviorPieces : [Piece] = []
-                for piece in potentialSaviorPieces {
-                    for move in piece.legalMoves(boardstate:boardstate) {
-                        let tempPos = piece.position
-                        movePiece(from:tempPos, to:move)
-                        if inCheck(color:color) {
-                            saviorPieces.append(piece)
-                        }
-                        movePiece(from:move, to:tempPos) 
-                    }
-                }
-                if saviorPieces.count == 0 {
-                    print("\(color)King is in checkmate")
-                    return true
+        if aiColor == "w" {
+            for piece in whitePieces {
+                switch piece.type {
+                case "p":
+                    ;
+                case "r":
+                    ;
+                case "kn":
+                    ;
+                case "b":
+                    ;
+                case "q":
+                    ;
+                case "k":
+                    ;
+                default:
+                    ;
                 }
             }
+            
+            
+        } else {
+            
         }
-        print("\(color)King is not in checkmate")
-        return false*/
-    }
+    }*/
 }
 
