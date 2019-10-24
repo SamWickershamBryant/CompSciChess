@@ -97,28 +97,11 @@ class Menu {
     ////////////////////////////////////////////////////////
     
     func setAllRects(canvas:Canvas) {
-        print("///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////")
-        print("canvas size: \(canvasSize)")
-        print()
-        print("setting all rects")
         setMainRect(canvas:canvas)
-        print("set main rect:", mainRect)
-        print()
         setSideBarRect(canvas:canvas)
-        print("set side bar rect:", sideBarRect)
-        print()
         setGameRect(canvas:canvas)
-        print("set game rect:", gameRect)
-        print()
         spliceMainRect(canvas:canvas)
-        print("spliced main rect:")
-        print("..........topMarginRect = \(topMarginRect)")
-        print("..........boardRect = \(boardRect)")
-        print("..........bottomMarginRect = \(bottomMarginRect)")
-        print()
         setBoardSettings()
-        print("set board settings:", boardSettings)
-        print()
         return
     }
     
@@ -172,8 +155,7 @@ class Menu {
         var excessSpace = 0
         
         if boardHeight > boardWidth {
-            print("height > width")
-            
+                    
             repeat {
                 boardHeight -= 1
                 excessSpace += 1
@@ -185,8 +167,7 @@ class Menu {
             boardRect.size = Size(width:mainWidth, height:boardHeight)
         }
         if boardHeight < boardWidth {
-            print("height < width")
-                        
+                                
             repeat {
                 boardHeight += 1
                 excessSpace -= 1
