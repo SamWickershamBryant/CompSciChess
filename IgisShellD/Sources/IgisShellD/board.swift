@@ -486,55 +486,60 @@ class Board {
     }
 
     func inCheck(color:String) -> Bool { // color: "w" or "b"
-        var friendlyKing = Piece("b")
-        for row in 0...7{
-            for piece in 0...7{
-                if boardstate[row][piece] != nil{
-                    if boardstate[row][piece]!.color == color && boardstate[row][piece]!.type == "K"{
-                         friendlyKing = boardstate[row][piece]!
-                    }
-                }
-            }
-        }
+        let friendlyKingPosition = Board.findPiece(color,"k",boardstate:boardstate)[0]
+        let friendlyKing = Board.pieceAt(friendlyKingPosition, boardstate:boardstate)
         var inCheck = false
-        for row in 0 ... 7 {
-            for piece in 0 ... 7 {
-                
-                if boardstate[row][piece] != nil{
-                    if boardstate[row][piece]!.color == "w"{
-                        for point in boardstate[row][piece]!.moveList(boardstate:boardstate){
-                            
-                            if (Board.pieceAt(point, boardstate:boardstate)!.type == friendlyKing.type) && (Board.pieceAt(point, boardstate:boardstate)!.color == friendlyKing.color){
-                                inCheck = true
-                            }
-                        }
-                        
-                    // <- gives OPTIONAL piece, nil = empty space.
-                // check if color is opposite, then if .moveList() (-> [Point]) hits friendly king
-                // Board.pieceAt(point, boardstate:boardstate) -> optional piece <- check if it is friendly king, if so return true, if not then false
+
+        /*color == "w" ? alivePieces(color:"b").map{$0.legalMoves}.map{enemyMoves.append($0)} :
+          alivePieces(color:"w").map{$0.legalMoves}.map{enemyMoves.append($0)}*/
+
+        if color == "w" {
+            for piece in alivePieces(color:"b") {
+                for move in legalMoves(of:piece.position) {
+                    if move.x == friendlyKing!.position.x && move.y == friendlyKing!.position.y {
+                        inCheck = true
                     }
                 }
             }
-            
+        } else {
+            for piece in alivePieces(color:"w") {
+                for move in legalMoves(of:piece.position) {
+                    if move.x == friendlyKing!.position.x && move.y == friendlyKing!.position.y {
+                        inCheck = true
+                    }
+                }
+            }
         }
         return inCheck
     }
    
     func inCheckmate(color:String) -> Bool {
-        let friendlyKingPosition = Board.findPiece("\(color)", "k", boardstate: boardstate)
-        let friendlyKing = Board.pieceAt(friendlyKingPosition[0], boardstate:boardstate)
+        var hasLegalMoves = false
+        for piece in alivePieces(color:color) {
+            if piece.legalMoves(boardstate:boardstate).count > 1 {
+                hasLegalMoves = true
+            }
+        }
+        print("\(color) Checkmate is \(!hasLegalMoves)")
+        if color == "w" { print("Black Wins!") }
+        else { print("White Wins!") }
+        return !hasLegalMoves
+        
+        
+        /*let friendlyKingPosition = Board.findPiece("\(color)", "k", boardstate: boardstate)[0]
+        let friendlyKing = Board.pieceAt(friendlyKingPosition, boardstate:boardstate)
         if friendlyKing != nil {
-            print(friendlyKing, friendlyKing!)
             if inCheck(color:color) && friendlyKing!.legalMoves(boardstate:boardstate).count == 0 {
                 let potentialSaviorPieces = alivePieces(color:color)
                 var saviorPieces : [Piece] = []
-                //var saviorMoves : [String]
                 for piece in potentialSaviorPieces {
-                    for _ in piece.legalMoves(boardstate:boardstate) {
-                        if inCheck(color:"\(color)") == false {
+                    for move in piece.legalMoves(boardstate:boardstate) {
+                        let tempPos = piece.position
+                        movePiece(from:tempPos, to:move)
+                        if inCheck(color:color) {
                             saviorPieces.append(piece)
-                            //saviorMoves.append("\(piece)\(move)")
                         }
+                        movePiece(from:move, to:tempPos) 
                     }
                 }
                 if saviorPieces.count == 0 {
@@ -544,7 +549,7 @@ class Board {
             }
         }
         print("\(color)King is not in checkmate")
-        return false
+        return false*/
     }
 }
 
