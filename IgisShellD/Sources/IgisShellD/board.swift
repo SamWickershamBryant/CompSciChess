@@ -166,11 +166,25 @@ class Board {
             
             var needToClear = true
             
-            if piece!.type != "p" {
+            if piece!.type != "p" || piece!.type != "k" {
                 if Board.pieceAt(Point(x:to.x,y:to.y),boardstate:boardstate) != nil {
                     // if a pieces point is -1,-1 its considered "dead"            
                     Board.pieceAt(Point(x:to.x,y:to.y),boardstate:boardstate)!.position = Point(x:-1,y:-1)
                 }
+            }
+            if piece!.type == "k" {
+                // left Side
+                if from.y == to.y && from.x-2 == to.x {
+                    let rook = Board.pieceAt(Point(x:from.x-4,y:from.y),boardstate:boardstate)
+                    boardstate[from.y][from.x-1] = rook
+                    boardstate[from.y][from.x-4] = nil
+                }
+                // right Side
+                if from.y == to.y && from.x+2 == to.x {
+                    let rook = Board.pieceAt(Point(x:from.x+3,y:from.y),boardstate:boardstate)
+                    boardstate[from.y][from.x+1] = rook
+                    boardstate[from.y][from.x+3] = nil
+                }                
             } else { // pawn garbage
                 if abs(to.y - from.y) == 2 && abs(to.x - from.x) == 0 {
                     piece!.enPassantTarget = true
@@ -484,7 +498,6 @@ class Board {
         
         
     }
-
     func inCheck(color:String) -> Bool { // color: "w" or "b"
         let friendlyKingPosition = Board.findPiece(color,"k",boardstate:boardstate)[0]
         let friendlyKing = Board.pieceAt(friendlyKingPosition, boardstate:boardstate)
@@ -551,5 +564,6 @@ class Board {
         print("\(color)King is not in checkmate")
         return false*/
     }
+    */
 }
 
