@@ -18,7 +18,7 @@ class Menu {
     var game : Game? = nil
     var lastRenderedState = -1
     let userId : Int
-        
+    var board : Board
     var canvasSize : Size
     
     init(userId:Int) {
@@ -29,7 +29,7 @@ class Menu {
         topMarginRect = Rect(topLeft:Point(x:20, y:0), size:Size(width:5, height:5))
         boardRect = Rect(topLeft:Point(x:20, y:0), size:Size(width:5, height:5))
         bottomMarginRect = Rect(topLeft:Point(x:20, y:0), size:Size(width:5, height:5))
-
+        board = Board(boardstate:Board.defaultBoardstate())
         self.userId = userId
         self.canvasSize = Size(width: 10000, height: 8000)
         self.boardSettings = BoardSettings(topLeft:Point(x:100,y:100),
@@ -55,6 +55,14 @@ class Menu {
     func update(imageLibrary:ImageLibrary, canvas:Canvas) {
         if gameNeedsToRender() {
             renderGame(imageLibrary:imageLibrary, canvas:canvas)
+        }
+        if board.inCheckmate(color:"b"){
+            let text = Text(location:Point(x:50, y:50), text:"White Wins!!!")
+            canvas.render(text)
+        }
+        else if board.inCheckmate(color:"w"){
+            let text = Text(location:Point(x:50, y:50), text:"Black Wins!!!")
+            canvas.render(text)
         }
     }
 

@@ -504,7 +504,6 @@ class Board {
 
         /*color == "w" ? alivePieces(color:"b").map{$0.legalMoves}.map{enemyMoves.append($0)} :
           alivePieces(color:"w").map{$0.legalMoves}.map{enemyMoves.append($0)}*/
-
         if color == "w" {
             for piece in alivePieces(color:"b") {
                 for move in legalMoves(of:piece.position) {
@@ -528,9 +527,11 @@ class Board {
     func inCheckmate(color:String) -> Bool {
         var hasLegalMoves = false
         for piece in alivePieces(color:color) {
+            
             if piece.legalMoves(boardstate:boardstate).count > 1 {
                 hasLegalMoves = true
             }
+           
         }
         print("\(color) Checkmate is \(!hasLegalMoves)")
         return !hasLegalMoves
