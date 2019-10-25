@@ -1,7 +1,7 @@
 import Igis
 import Foundation
 
-struct BoardSettings {
+struct BoardSettings : CustomStringConvertible {
     var topLeft : Point
     var size : Int
     var outLineColor : Color
@@ -16,5 +16,10 @@ struct BoardSettings {
         self.inLineColor = inLineColor
         self.squareColor = squareColor
         self.lineWidth = lineWidth
+    }
+    var description : String {
+        return "tL:\(topLeft.x), \(topLeft.y);\n" +
+          "size:\(size);" 
+          
     }
 }

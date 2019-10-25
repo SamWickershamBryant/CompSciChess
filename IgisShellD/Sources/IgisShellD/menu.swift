@@ -45,6 +45,7 @@ class Menu {
     func onClick(point:Point) {
         if game != nil {
             game!.onClick(boardSettings:boardSettings, point:point, userId:userId)
+            print(boardSettings)
         }
     }
     
@@ -55,6 +56,7 @@ class Menu {
     func update(imageLibrary:ImageLibrary, canvas:Canvas) {
         if gameNeedsToRender() {
             renderGame(imageLibrary:imageLibrary, canvas:canvas)
+            print("render game")
         }
     }
 
@@ -74,6 +76,8 @@ class Menu {
         if game!.isReady(imageLibrary:imageLibrary) {
             game!.renderGame(imageLibrary:imageLibrary, boardSettings:boardSettings, canvas:canvas)
             lastRenderedState = game!.gameState
+        } else {
+            lastRenderedState -= 1
         }
         
         canvas.render(Rectangle(rect:gameRect, fillMode:.stroke), Rectangle(rect:sideBarRect, fillMode:.stroke))
@@ -127,10 +131,10 @@ class Menu {
         mainRect = Rect(topLeft:Point(x:0, y:0),
                         size:Size(width:updatedWidth, height:updatedHeight))
 
-        print("")
-        print("x = \(x)")
-        print("y = \(y)")
-        print("updatedWidth = \(updatedWidth)")
+       // print("")
+       // print("x = \(x)")
+       /// print("y = \(y)")
+       // print("updatedWidth = \(updatedWidth)")
         return
     }
     

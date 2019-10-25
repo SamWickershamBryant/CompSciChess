@@ -25,9 +25,9 @@ class Board {
                                                   ]}
 
     func debug() {
-        print("true:\(Board.moveLeavesKingInDanger(from:Point(x:4,y:3), to:Point(x:4,y:2), boardstate:boardstate))")
-        print("false:\(Board.moveLeavesKingInDanger(from:Point(x:5,y:3), to:Point(x:5,y:2), boardstate:boardstate))")
-        print("true:\(Board.moveLeavesKingInDanger(from:Point(x:5,y:3), to:Point(x:5,y:5), boardstate:boardstate))")
+        //print("true:\(Board.moveLeavesKingInDanger(from:Point(x:4,y:3), to:Point(x:4,y:2), boardstate:boardstate))")
+        //print("false:\(Board.moveLeavesKingInDanger(from:Point(x:5,y:3), to:Point(x:5,y:2), boardstate:boardstate))")
+        //print("true:\(Board.moveLeavesKingInDanger(from:Point(x:5,y:3), to:Point(x:5,y:5), boardstate:boardstate))")
     }
 
     func dupePiece(_ piece:Piece?) -> Piece? {
@@ -112,16 +112,16 @@ class Board {
     }
     // This will display the board without having to use images
     func displayBoard() {
-        print("   0   1   2   3   4   5   6   7  ")
+        //print("   0   1   2   3   4   5   6   7  ")
         var count = 0
         for row in 0...7 {
             for column in 0...7 {
                 if column == 0 {
-                    print("\(count)", terminator: " ")
+                    //print("\(count)", terminator: " ")
                 }
                 boardstate[row][column] != nil ? print(" \(boardstate[row][column]!.color)\(boardstate[row][column]!.type) ",terminator: " ") : print(" - ", terminator: " ")
             }            
-            print("\n")
+            //print("\n")
             count += 1
         }
     }    
@@ -144,7 +144,7 @@ class Board {
     }
        
     func movePiece(from:Point, to:Point) {
-        print("STARTING MOVE PIECE")
+        //print("STARTING MOVE PIECE")
         guard Board.inBounds(from) != false else {
             print("Starting piece out of bounds")
             return
@@ -206,13 +206,13 @@ class Board {
                     if upLeft {
                         if Board.pieceAt(to, boardstate:boardstate) == nil {
                             let left = Point(x:to.x, y:from.y)
-                            print("2 more")
+                            //print("2 more")
                             if Board.pieceAt(left, boardstate:boardstate) != nil {
-                                print("1 more")
+                                //print("1 more")
                                 if Board.pieceAt(left, boardstate:boardstate)!.enPassantTarget {
                                     boardstate[left.y][left.x]!.position = Point(x:-1,y:-1)
                                     boardstate[left.y][left.x] = nil
-                                    print("left")
+                                    //print("left")
                                 }
                             }
                         } else {
@@ -220,14 +220,14 @@ class Board {
                         }
                     } 
                     else if upRight {
-                        print("dont see this")
+                        //print("dont see this")
                         if Board.pieceAt(to, boardstate:boardstate) == nil {
                             let right = Point(x:to.x, y:from.y)
                             if Board.pieceAt(right, boardstate:boardstate) != nil {
                                 if Board.pieceAt(right, boardstate:boardstate)!.enPassantTarget {
                                     boardstate[right.y][right.x]!.position = Point(x:-1,y:-1)
                                     boardstate[right.y][right.x] = nil
-                                    print("right")
+                                    //print("right")
                                 }
                             }
                         } else {
@@ -246,21 +246,21 @@ class Board {
                     enPassant = []
                 }
             }
-            print("reaaaally close")
+            //print("reaaaally close")
             piece!.position = Point(x:to.x, y:to.y)
             piece!.hasMoved = true
             boardstate[to.y][to.x] = piece
             boardstate[from.y][from.x] = nil
-            print("made it!")
+            //print("made it!")
             
             if  piece!.color == "w" {
-                //print("black in check: \(inCheck(color:"b"))")
+                ////print("black in check: \(inCheck(color:"b"))")
                 whosMove = "b"
             } else if piece!.color == "b" {
                 whosMove = "w"
             }
             
-            print("FINISH MOVE PIECE")
+            //print("FINISH MOVE PIECE")
         }
     }
     
@@ -273,7 +273,7 @@ class Board {
     
 
     static func moveLeavesKingInDanger(from:Point, to:Point, boardstate:[[Piece?]]) -> Bool {
-        print("STARTING DANGER CHECK")
+        //print("STARTING DANGER CHECK")
         var testBoard = boardstate
         guard Board.inBounds(from) != false else {
             print("Starting piece out of bounds")
@@ -311,7 +311,7 @@ class Board {
                         let moveListTake = moveList.filter({Board.pieceAt($0, boardstate:testBoard) != nil})
                         if moveListTake.filter({
                             Board.pieceAt($0, boardstate:testBoard)!.type == "k"}).count > 0 {
-                            print("FINISH DANGER CHECK TRUE")
+                            //print("FINISH DANGER CHECK TRUE")
                             return true
                         }
                         
@@ -320,7 +320,7 @@ class Board {
                 }
             }
         }
-        print("FINISH DANGER CHECK FALSE")
+        //print("FINISH DANGER CHECK FALSE")
 
         return false
         
@@ -337,13 +337,13 @@ class Board {
             print("piece does not exit at \(of)")
             return []
         }
-        print("STARTING LEGAL MOVES")
+        //print("STARTING LEGAL MOVES")
         return Board.pieceAt(of, boardstate:boardstate)!.legalMoves(boardstate:boardstate)
         
     }
 
     func renderMoves(of:Point, boardSettings:BoardSettings, canvas:Canvas) {
-        print("STARTING RENDER MOVES")
+        //print("STARTING RENDER MOVES")
         guard Board.inBounds(of) else {
             print("not in bounds: \(of)")
             return
@@ -376,7 +376,7 @@ class Board {
                 }
             }
         }
-        print("FINISH RENDER MOVES")
+        //print("FINISH RENDER MOVES")
         
     }
 
@@ -397,7 +397,7 @@ class Board {
                         imageLibrary.displayImage(piece:boardstate[row][piece]!, rect:boundingRect,
                                                   canvas:canvas)
                     } else {
-                        print("this piece not ready fam")
+                        //print("this piece not ready fam")
                     }
                 }
             }
@@ -431,7 +431,7 @@ class Board {
 
     func renderBoard(boardSettings:BoardSettings,canvas:Canvas) {
         //render squares, then inlines, then outlines in that order
-        print("finna render the board")
+        //print("finna render the board")
         let sideLength = boardSettings.size / 8 // side length of a single square
 
          //render squares:
