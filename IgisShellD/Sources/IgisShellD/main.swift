@@ -10,7 +10,7 @@ class Painter : PainterBase {
 
     var menu : Menu
 
-    var renderHolder : Bool
+    var renderHolder : Int
     
     required init() {
         library = ImageLibrary()
@@ -18,7 +18,7 @@ class Painter : PainterBase {
         user = Painter.nextUser
         Painter.nextUser += 1
 
-        renderHolder = false
+        renderHolder = 0
         
         print("user no \(user)")
             
@@ -55,6 +55,11 @@ class Painter : PainterBase {
         menu.update(imageLibrary:library, canvas:canvas)
         menu.canvasSize = canvas.canvasSize!
         menu.setAllRects(canvas:canvas)
+
+        if renderHolder < 1 {
+            print("canvasSize = \(menu.canvasSize)")
+            renderHolder += 1
+        }
     }
 
     override func calculate(canvasId:Int, canvasSize:Size?) {
