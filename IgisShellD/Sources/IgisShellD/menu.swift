@@ -45,6 +45,7 @@ class Menu {
     func onClick(point:Point) {
         if game != nil {
             game!.onClick(boardSettings:boardSettings, point:point, userId:userId)
+            print(boardSettings)
         }
     }
     
@@ -55,6 +56,7 @@ class Menu {
     func update(imageLibrary:ImageLibrary, canvas:Canvas) {
         if gameNeedsToRender() {
             renderGame(imageLibrary:imageLibrary, canvas:canvas)
+            print("render game")
         }
         if board.inCheckmate(color:"b"){
             let text = Text(location:Point(x:50, y:50), text:"White Wins!!!")
@@ -82,6 +84,8 @@ class Menu {
         if game!.isReady(imageLibrary:imageLibrary) {
             game!.renderGame(imageLibrary:imageLibrary, boardSettings:boardSettings, canvas:canvas)
             lastRenderedState = game!.gameState
+        } else {
+            lastRenderedState -= 1
         }
         
         canvas.render(Rectangle(rect:gameRect, fillMode:.stroke), Rectangle(rect:sideBarRect, fillMode:.stroke))
@@ -116,19 +120,29 @@ class Menu {
     func setMainRect(canvas:Canvas) {
         let canvasWidth = canvasSize.width
         let canvasHeight = canvasSize.height
+        var updatedWidth = 0
         
-        var updatedWidth = canvasWidth - ((canvasWidth * 35) / 100)
+        let x = Double(canvasSize.width)
+        var y = 30.0
+        y = (0.0000677506775068*(x*x)) - (0.122967479675*x)
+        y = y + 95.7926829268
+                
+        updatedWidth = canvasWidth - ((canvasWidth * Int(y)) / 100)
         while updatedWidth % 8 != 0 {
             updatedWidth += 1
         }
-        
         var updatedHeight = canvasHeight
         while updatedHeight % 10 != 0 {
             updatedHeight -= 1
         }
         
         mainRect = Rect(topLeft:Point(x:0, y:0),
-                            size:Size(width:updatedWidth, height:updatedHeight))
+                        size:Size(width:updatedWidth, height:updatedHeight))
+
+       // print("")
+       // print("x = \(x)")
+       /// print("y = \(y)")
+       // print("updatedWidth = \(updatedWidth)")
         return
     }
     
