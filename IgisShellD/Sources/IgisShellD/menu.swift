@@ -58,7 +58,9 @@ class Menu {
             renderGame(imageLibrary:imageLibrary, canvas:canvas)
             print("render game")
         }
+        print("hi")
         if board.inCheckmate(color:"b"){
+            print("hi")
             let text = Text(location:Point(x:50, y:50), text:"White Wins!!!")
             canvas.render(text)
         }
